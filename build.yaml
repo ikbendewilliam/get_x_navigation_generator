@@ -9,6 +9,6 @@ builders:
   getXNavigation_config_builder:
     import: "package:get_x_navigation_generator/builder.dart"
     builder_factories: ["getXNavigationConfigBuilder"]
-    build_extensions: { ".dart": [".config.dart",".module.dart"] }
+    build_extensions: { ".dart": [".config.dart"] }
     auto_apply: dependents
     build_to: source

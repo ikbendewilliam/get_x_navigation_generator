@@ -15,9 +15,9 @@ class BaseNavigator {
     ),
   ];
 
-  void goToFirstPage() async => Get.offNamed<void>(RouteNames.firstPage);
+  void goToFirstPage() async => Get.toNamed<void>(RouteNames.firstPage);
 
-  void goToSecondPage() async => Get.offNamed<void>(RouteNames.secondPage);
+  void goToSecondPage() async => Get.toNamed<void>(RouteNames.secondPage);
 
   void goBack<T>({T? result}) async => Get.back<T>(result: result);
 

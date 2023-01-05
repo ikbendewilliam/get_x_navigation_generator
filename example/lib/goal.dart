@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_x_navigation_generator/get_x_navigation_generator.dart';
 
-import '_goal_result.dart';
+import 'goal.g.dart';
 
 @getXNavigator
 class MainNavigator extends BaseNavigator {

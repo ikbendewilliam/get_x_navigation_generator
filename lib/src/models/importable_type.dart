@@ -1,64 +1,52 @@
-import 'package:collection/collection.dart';
-
 class ImportableType {
   final String? import;
   final String name;
+  final bool isRequired;
   final bool isNullable;
   final List<ImportableType> typeArguments;
-
-  String get identity => "$import#$name";
 
   const ImportableType({
     required this.name,
     this.import,
+    this.isRequired = false,
     this.isNullable = false,
     this.typeArguments = const [],
   });
 
-  @override
-  String toString() {
-    if (typeArguments.isNotEmpty) {
-      return '$name<${typeArguments.map((e) => e.toString())}>';
-    } else {
-      return name;
-    }
-  }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is ImportableType &&
-          runtimeType == other.runtimeType &&
-          import == other.import &&
-          name == other.name &&
-          isNullable == other.isNullable &&
-          const ListEquality().equals(typeArguments, other.typeArguments));
-
-  @override
-  int get hashCode => import.hashCode ^ name.hashCode ^ isNullable.hashCode ^ const ListEquality().hash(typeArguments);
-
-  factory ImportableType.fromJson(Map<String, dynamic> json) {
-    List<ImportableType> typeArguments = [];
-    if (json['typeArguments'] != null) {
-      json['typeArguments'].forEach((v) {
-        typeArguments.add(ImportableType.fromJson(v));
-      });
-    }
-    return ImportableType(
-      import: json['import'],
-      name: json['name'],
-      isNullable: json['isNullable'],
-      typeArguments: typeArguments,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    // ignore: unnecessary_cast
+  Map<String, dynamic> toMap() {
     return {
       'import': import,
       'name': name,
+      'isRequired': isRequired,
       'isNullable': isNullable,
-      if (typeArguments.isNotEmpty) "typeArguments": typeArguments.map((v) => v.toJson()).toList(),
-    } as Map<String, dynamic>;
+      'typeArguments': typeArguments.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory ImportableType.fromMap(Map<String, dynamic> map) {
+    return ImportableType(
+      import: map['import'],
+      name: map['name'] ?? '',
+      isRequired: map['isRequired'] ?? false,
+      isNullable: map['isNullable'] ?? false,
+      typeArguments: List<ImportableType>.from(map['typeArguments']?.map((x) => ImportableType.fromMap(x))),
+    );
+  }
+
+  @override
+  String toString() {
+    return 'ImportableType(import: $import, name: $name, isRequired: $isRequired, isNullable: $isNullable, typeArguments: $typeArguments)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is ImportableType && other.import == import && other.name == name && other.isRequired == isRequired && other.isNullable == isNullable;
+  }
+
+  @override
+  int get hashCode {
+    return import.hashCode ^ name.hashCode ^ isRequired.hashCode ^ isNullable.hashCode ^ typeArguments.hashCode;
   }
 }

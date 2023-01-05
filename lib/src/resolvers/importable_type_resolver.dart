@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 abstract class ImportableTypeResolver {
   String? resolveImport(Element element);
 
-  ImportableType resolveType(DartType type);
+  ImportableType resolveType(DartType type, [bool isRequired = false]);
 
   ImportableType resolveFunctionType(FunctionType function, [ExecutableElement? executableElement]);
 
@@ -108,11 +108,12 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
   }
 
   @override
-  ImportableType resolveType(DartType type) {
+  ImportableType resolveType(DartType type, [bool isRequired = false]) {
     return ImportableType(
       name: type.element?.name ?? type.getDisplayString(withNullability: false),
       isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
       import: resolveImport(type.element),
+      isRequired: isRequired,
       typeArguments: _resolveTypeArguments(type),
     );
   }

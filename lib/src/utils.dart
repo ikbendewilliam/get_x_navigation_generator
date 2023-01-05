@@ -46,14 +46,3 @@ void printBoxed(String message, {String header = '--------------------------'}) 
   final pre = header;
   print("$pre\n$message\n${''.padRight(72, '-')} \n");
 }
-
-extension IterableExtenstion<E> on Iterable<E> {
-  E? firstOrNull(bool Function(E element) test) {
-    for (var e in this) {
-      if (test(e)) {
-        return e;
-      }
-    }
-    return null;
-  }
-}
