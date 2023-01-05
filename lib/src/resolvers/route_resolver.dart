@@ -51,7 +51,7 @@ class RouteResolver {
     return GetXRouteConfig(
       type: _typeResolver.resolveType(annotatedElement.thisType),
       constructorName: constructor.name,
-      parameters: constructor.parameters.map((p) => _typeResolver.resolveType(p.type, p.isRequired)).toList(),
+      parameters: constructor.parameters.map((p) => _typeResolver.resolveType(p.type, p.isRequired, p.name)).toList(),
       routeName: routeName,
     );
   }

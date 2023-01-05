@@ -1,14 +1,17 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:get_x_navigation_generator/src/case_utils.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
+import 'package:get_x_navigation_generator/src/utils.dart';
 
 class LibraryGenerator {
   late Set<GetXRouteConfig> routes;
   final String className;
+  final Uri? targetFile;
 
   LibraryGenerator({
     required this.routes,
     required this.className,
+    this.targetFile,
   });
 
   Library generate() {
@@ -29,7 +32,7 @@ class LibraryGenerator {
                     ..static = true
                     ..modifier = FieldModifier.final$
                     ..assignment =
-                        Code('[${routes.map((route) => "GetPage(name: RouteNames.${CaseUtil(route.routeName).camelCase}, page: () => ${route.type.name}())").join(',')}]'),
+                        Code('[${routes.map((route) => "GetPage(name: RouteNames.${CaseUtil(route.routeName).camelCase}, page: () => ${route.type.className}())").join(',')}]'),
                 ))
                 ..methods.addAll(routes.map((route) {
                   return Method(
@@ -37,12 +40,18 @@ class LibraryGenerator {
                       ..name = 'goTo${CaseUtil(route.routeName).upperCamelCase}'
                       ..lambda = true
                       ..requiredParameters.addAll(route.parameters.where((e) => e.isRequired).map((p) => Parameter(
-                            (b) => b..name = p.name,
-                            // ..type = typeRefer(p.type, targetFile),
+                            (b) => b
+                              ..name = p.name ?? p.className
+                              ..named = true
+                              ..required = true
+                              ..type = typeRefer(p, targetFile),
                           )))
                       ..optionalParameters.addAll(route.parameters.where((e) => !e.isRequired).map((p) => Parameter(
-                            (b) => b..name = p.name,
-                            // ..type = typeRefer(p.type, targetFile),
+                            (b) => b
+                              ..name = p.name ?? p.className
+                              ..named = true
+                              ..required = false
+                              ..type = typeRefer(p, targetFile),
                           )))
                       // ..returns = typeRefer(route.type, targetFile) // TODO: Return type?
                       ..body = Code('Get.toNamed<void>(RouteNames.${CaseUtil(route.routeName).camelCase})'),

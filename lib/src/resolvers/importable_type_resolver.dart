@@ -82,7 +82,7 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
     }
 
     return ImportableType(
-      name: functionName,
+      className: functionName,
       import: resolveImport(elementToImport),
       isNullable: function.nullabilitySuffix == NullabilitySuffix.question,
     );
@@ -93,10 +93,10 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
     if (typeToCheck is ParameterizedType) {
       for (DartType type in typeToCheck.typeArguments) {
         if (type.element is TypeParameterElement) {
-          importableTypes.add(const ImportableType(name: 'dynamic'));
+          importableTypes.add(const ImportableType(className: 'dynamic'));
         } else {
           importableTypes.add(ImportableType(
-            name: type.element?.name ?? type.getDisplayString(withNullability: false),
+            className: type.element?.name?.replaceAll('?', '') ?? type.getDisplayString(withNullability: false),
             import: resolveImport(type.element),
             isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
             typeArguments: _resolveTypeArguments(type),
@@ -108,9 +108,10 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
   }
 
   @override
-  ImportableType resolveType(DartType type, [bool isRequired = false]) {
+  ImportableType resolveType(DartType type, [bool isRequired = false, String? name]) {
     return ImportableType(
-      name: type.element?.name ?? type.getDisplayString(withNullability: false),
+      className: type.element?.name ?? type.getDisplayString(withNullability: false),
+      name: name,
       isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
       import: resolveImport(type.element),
       isRequired: isRequired,

@@ -29,6 +29,7 @@ class GetXNavigationConfigGenerator extends GeneratorForAnnotation<GetXNavigator
     final generator = LibraryGenerator(
       routes: routes,
       className: 'BaseNavigator', // TODO: Customizable class name
+      targetFile: element.source?.uri,
     );
 
     final generatedLib = generator.generate();
