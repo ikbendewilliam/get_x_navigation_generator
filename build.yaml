@@ -1,0 +1,14 @@
+builders:
+  getXNavigation_builder:
+    import: "package:get_x_navigation_generator/builder.dart"
+    builder_factories: ["getXNavigationBuilder"]
+    build_extensions: { ".dart": [".get_x_navigation.json"] }
+    auto_apply: dependents
+    runs_before: ["get_x_navigation_generator|getXNavigation_config_builder"]
+    build_to: cache
+  getXNavigation_config_builder:
+    import: "package:get_x_navigation_generator/builder.dart"
+    builder_factories: ["getXNavigationConfigBuilder"]
+    build_extensions: { ".dart": [".config.dart",".module.dart"] }
+    auto_apply: dependents
+    build_to: source
