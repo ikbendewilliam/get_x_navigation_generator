@@ -7,10 +7,10 @@ import 'package:get_x_navigation_generator/get_x_navigation_generator.dart';
   returnTypeNullable: true,
 )
 class ThirdPage extends StatelessWidget {
-  final String? title;
+  final SomeModel? previousValue;
 
   const ThirdPage({
-    required this.title,
+    required this.previousValue,
     super.key,
   });
 
