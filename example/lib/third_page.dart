@@ -1,17 +1,16 @@
+import 'package:example/some_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get_x_navigation_generator/get_x_navigation_generator.dart';
 
 @GetXRoute(
-  routeName: 'custom-name',
-  returnType: bool,
+  returnType: SomeModel,
+  returnTypeNullable: true,
 )
-class SecondPage extends StatelessWidget {
-  final String title;
-  final String? subTitle;
+class ThirdPage extends StatelessWidget {
+  final String? title;
 
-  const SecondPage({
+  const ThirdPage({
     required this.title,
-    this.subTitle,
     super.key,
   });
 

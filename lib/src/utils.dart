@@ -51,17 +51,38 @@ void printBoxed(String message, {String header = '--------------------------'}) 
   print("$pre\n$message\n${''.padRight(72, '-')} \n");
 }
 
-Reference typeRefer(ImportableType type, [Uri? targetFile, bool withNullabilitySuffix = true]) {
-  final relativeImport = targetFile == null ? ImportableTypeResolver.resolveAssetImport(type.import) : ImportableTypeResolver.relative(type.import, targetFile);
-  return TypeReference((reference) {
-    reference
-      ..symbol = '${type.className}${withNullabilitySuffix && type.isNullable && !type.className.endsWith('?') ? '?' : ''}'
-      ..url = relativeImport
-      ..isNullable = withNullabilitySuffix && type.isNullable;
-    if (type.typeArguments.isNotEmpty) {
-      reference.types.addAll(
-        type.typeArguments.map((e) => typeRefer(e, targetFile, withNullabilitySuffix)),
-      );
-    }
-  });
+Reference typeRefer(
+  ImportableType? type, {
+  Uri? targetFile,
+  bool withNullabilitySuffix = true,
+  bool forceNullable = false,
+  bool forceFuture = false,
+}) {
+  final TypeReference typeReference;
+  if (type == null) {
+    typeReference = TypeReference((r) => r..symbol = 'void');
+  } else {
+    final relativeImport = targetFile == null ? ImportableTypeResolver.resolveAssetImport(type.import) : ImportableTypeResolver.relative(type.import, targetFile);
+    typeReference = TypeReference((reference) {
+      reference
+        ..symbol = '${type.className}${withNullabilitySuffix && (forceNullable || type.isNullable) && !type.className.endsWith('?') ? '?' : ''}'
+        ..url = relativeImport
+        ..isNullable = withNullabilitySuffix && (forceNullable || type.isNullable);
+      if (type.typeArguments.isNotEmpty) {
+        reference.types.addAll(
+          type.typeArguments.map((e) => typeRefer(
+                e,
+                targetFile: targetFile,
+                withNullabilitySuffix: withNullabilitySuffix,
+              )),
+        );
+      }
+    });
+  }
+  if (!forceFuture) return typeReference;
+  return TypeReference(
+    (r) => r
+      ..symbol = 'Future'
+      ..types.add(typeReference),
+  );
 }

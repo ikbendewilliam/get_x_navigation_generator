@@ -21,6 +21,8 @@ class RouteResolver {
 
     final getXRoute = ConstantReader(getXRouteAnnotation);
     final routeName = getXRoute.peek('routeName')?.stringValue ?? clazz.name;
+    final returnType = getXRouteAnnotation?.getField('returnType');
+    final returnTypeNullable = getXRouteAnnotation?.getField('returnTypeNullable')?.toBoolValue() ?? false;
 
     final constructor = clazz.constructors.first; // TODO: Support defining which constructor to use
     // late ExecutableElement executableInitializer;
@@ -50,8 +52,20 @@ class RouteResolver {
 
     return GetXRouteConfig(
       type: _typeResolver.resolveType(annotatedElement.thisType),
+      returnType: returnType?.toTypeValue() == null
+          ? null
+          : _typeResolver.resolveType(
+              returnType!.toTypeValue()!,
+              forceNullable: returnTypeNullable,
+            ),
       constructorName: constructor.name,
-      parameters: constructor.parameters.map((p) => _typeResolver.resolveType(p.type, p.isRequired, p.name)).toList(),
+      parameters: constructor.parameters
+          .map((p) => _typeResolver.resolveType(
+                p.type,
+                isRequired: p.isRequired,
+                name: p.name,
+              ))
+          .toList(),
       routeName: routeName,
     );
   }

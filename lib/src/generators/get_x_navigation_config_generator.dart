@@ -11,9 +11,12 @@ import 'package:glob/glob.dart';
 import 'package:source_gen/source_gen.dart';
 
 class GetXNavigationConfigGenerator extends GeneratorForAnnotation<GetXNavigator> {
+  static const _navigatorClassNameDefault = 'BaseNavigator';
+
   @override
   dynamic generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) async {
     final configFiles = Glob("**.get_x_navigation.json");
+    final navigatorClassName = annotation.peek('navigatorClassName')?.stringValue;
 
     final jsonData = <Map>[];
     await for (final id in buildStep.findAssets(configFiles)) {
@@ -28,7 +31,7 @@ class GetXNavigationConfigGenerator extends GeneratorForAnnotation<GetXNavigator
 
     final generator = LibraryGenerator(
       routes: routes,
-      className: 'BaseNavigator', // TODO: Customizable class name
+      className: navigatorClassName ?? _navigatorClassNameDefault,
       targetFile: element.source?.uri,
     );
 

@@ -6,6 +6,8 @@ class ImportableType {
   final bool isNullable;
   final List<ImportableType> typeArguments;
 
+  String get argumentName => name ?? className;
+
   const ImportableType({
     required this.className,
     this.name,

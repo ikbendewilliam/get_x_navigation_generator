@@ -31,30 +31,43 @@ class LibraryGenerator {
                     ..name = 'pages'
                     ..static = true
                     ..modifier = FieldModifier.final$
-                    ..assignment =
-                        Code('[${routes.map((route) => "GetPage(name: RouteNames.${CaseUtil(route.routeName).camelCase}, page: () => ${route.type.className}())").join(',')}]'),
+                    ..assignment = Code(
+                      '[${routes.map((route) {
+                        var page = 'GetPage(name: RouteNames.${CaseUtil(route.routeName).camelCase},';
+                        page += 'page: () => ${route.type.className}(';
+                        page += route.parameters.map((p) => "${p.argumentName}: Get.arguments['${p.argumentName}'] as ${typeRefer(p, targetFile: targetFile).symbol},").join('');
+                        page += ')),';
+                        return page;
+                      }).join('')}]',
+                    ),
                 ))
                 ..methods.addAll(routes.map((route) {
+                  var body = 'Get.toNamed<${typeRefer(route.returnType, targetFile: targetFile).symbol}>(RouteNames.${CaseUtil(route.routeName).camelCase}';
+                  if (route.parameters.isNotEmpty) {
+                    body += ', arguments: {';
+                    body += route.parameters.map((p) => "'${p.argumentName}': ${p.argumentName},").join('');
+                    body += '}';
+                  }
+                  body += ')';
                   return Method(
                     (b) => b
                       ..name = 'goTo${CaseUtil(route.routeName).upperCamelCase}'
                       ..lambda = true
-                      ..requiredParameters.addAll(route.parameters.where((e) => e.isRequired).map((p) => Parameter(
+                      ..modifier = MethodModifier.async
+                      ..optionalParameters.addAll(route.parameters.map((p) => Parameter(
                             (b) => b
-                              ..name = p.name ?? p.className
+                              ..name = p.argumentName
                               ..named = true
-                              ..required = true
-                              ..type = typeRefer(p, targetFile),
+                              ..required = p.isRequired
+                              ..type = typeRefer(p, targetFile: targetFile),
                           )))
-                      ..optionalParameters.addAll(route.parameters.where((e) => !e.isRequired).map((p) => Parameter(
-                            (b) => b
-                              ..name = p.name ?? p.className
-                              ..named = true
-                              ..required = false
-                              ..type = typeRefer(p, targetFile),
-                          )))
-                      // ..returns = typeRefer(route.type, targetFile) // TODO: Return type?
-                      ..body = Code('Get.toNamed<void>(RouteNames.${CaseUtil(route.routeName).camelCase})'),
+                      ..returns = typeRefer(
+                        route.returnType,
+                        targetFile: targetFile,
+                        forceNullable: true,
+                        forceFuture: true,
+                      )
+                      ..body = Code(body),
                   );
                 })),
             ),

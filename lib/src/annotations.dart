@@ -1,7 +1,13 @@
 /// Marks a class as a navigator and create
 /// a base navigator class for it
 class GetXNavigator {
-  const GetXNavigator();
+  /// The name of the navigator class to generate
+  /// If not provided 'BaseNavigator' will be used
+  final String? navigatorClassName;
+
+  const GetXNavigator({
+    this.navigatorClassName,
+  });
 }
 
 /// const instance of [InjectableInit]
@@ -13,11 +19,16 @@ class GetXRoute {
   /// Override the default name of the route
   final String? routeName;
 
-  final NavigationType navigationType;
+  final Type? returnType;
+  final bool returnTypeNullable;
+
+  final NavigationType navigationType; // TODO: Different push types
 
   const GetXRoute({
     this.navigationType = NavigationType.push,
     this.routeName,
+    this.returnType,
+    this.returnTypeNullable = false,
   });
 }
 

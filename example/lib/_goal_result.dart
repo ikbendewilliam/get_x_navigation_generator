@@ -7,15 +7,17 @@ class BaseNavigator {
   static final pages = [
     GetPage<void>(
       name: RouteNames.firstPage,
-      page: () => const FirstPage(),
+      page: () => FirstPage(
+        key: Get.arguments['key'] as Key?,
+      ),
     ),
     GetPage<void>(
       name: RouteNames.secondPage,
-      page: () => const SecondPage(),
+      page: () => const SecondPage(title: 'title'),
     ),
   ];
 
-  void goToFirstPage() async => Get.toNamed<void>(RouteNames.firstPage);
+  void goToFirstPage({Key? key}) async => Get.toNamed<void>(RouteNames.firstPage, arguments: {'key': key});
 
   void goToSecondPage() async => Get.toNamed<void>(RouteNames.secondPage);
 
