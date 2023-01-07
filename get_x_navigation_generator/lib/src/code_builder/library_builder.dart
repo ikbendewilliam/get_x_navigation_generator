@@ -19,7 +19,10 @@ class LibraryGenerator {
       (b) => b
         ..directives.addAll([
           Directive.import('package:get/route_manager.dart'),
-          ...routes.map((route) => route.type.import).whereType<String>().map((import) => Directive.import(import)),
+          ...routes
+              .map((route) => route.type.import)
+              .whereType<String>()
+              .map((import) => Directive.import(import)),
         ])
         ..body.addAll(
           [
@@ -30,21 +33,27 @@ class LibraryGenerator {
                   ..name = 'pages'
                   ..static = true
                   ..modifier = FieldModifier.final$
-                  ..assignment = literalList(routes.map((route) => const Reference('GetPage').call([], {
-                        'name': Reference('RouteNames.${CaseUtil(route.routeName).camelCase}'),
+                  ..assignment = literalList(routes.map((route) =>
+                      const Reference('GetPage').call([], {
+                        'name': Reference(
+                            'RouteNames.${CaseUtil(route.routeName).camelCase}'),
                         'page': Method(
                           (b) => b
                             ..name = ''
                             ..body = Reference(
-                              route.constructorName == route.type.className || route.constructorName.isEmpty
+                              route.constructorName == route.type.className ||
+                                      route.constructorName.isEmpty
                                   ? route.type.className
                                   : '${route.type.className}.${route.constructorName}',
                               // typeRefer(route.type, targetFile: targetFile).url,
                             ).call(
                                 [],
-                                route.parameters
-                                    .asMap()
-                                    .map((_, p) => MapEntry(p.argumentName, Reference("Get.arguments?['${p.argumentName}']").asA(typeRefer(p, targetFile: targetFile))))).code,
+                                route.parameters.asMap().map((_, p) => MapEntry(
+                                    p.argumentName,
+                                    Reference(
+                                            "Get.arguments?['${p.argumentName}']")
+                                        .asA(typeRefer(p,
+                                            targetFile: targetFile))))).code,
                         ).closure,
                       }))).code,
               ))
@@ -55,15 +64,25 @@ class LibraryGenerator {
                     ..types.add(const Reference('dynamic')),
                 ).call(
                   [
-                    Reference('RouteNames.${CaseUtil(route.routeName).camelCase}'),
+                    Reference(
+                        'RouteNames.${CaseUtil(route.routeName).camelCase}'),
                   ],
-                  {'arguments': Reference('${route.parameters.asMap().map((_, p) => MapEntry("'${p.argumentName}'", p.argumentName))}')},
+                  {
+                    'arguments': Reference(
+                        '${route.parameters.asMap().map((_, p) => MapEntry("'${p.argumentName}'", p.argumentName))}')
+                  },
                 );
                 Code body;
                 if (route.returnType != null) {
                   body = Block((b) => b
-                    ..statements.add(declareFinal('result').assign(bodyCall.awaited).statement)
-                    ..statements.add(const Reference('result').asA(typeRefer(route.returnType, targetFile: targetFile, forceNullable: true)).returned.statement));
+                    ..statements.add(declareFinal('result')
+                        .assign(bodyCall.awaited)
+                        .statement)
+                    ..statements.add(const Reference('result')
+                        .asA(typeRefer(route.returnType,
+                            targetFile: targetFile, forceNullable: true))
+                        .returned
+                        .statement));
                 } else {
                   body = bodyCall.code;
                 }
@@ -72,13 +91,14 @@ class LibraryGenerator {
                     ..name = 'goTo${CaseUtil(route.routeName).upperCamelCase}'
                     ..lambda = route.returnType == null
                     ..modifier = MethodModifier.async
-                    ..optionalParameters.addAll(route.parameters.map((p) => Parameter(
-                          (b) => b
-                            ..name = p.argumentName
-                            ..named = true
-                            ..required = p.isRequired
-                            ..type = typeRefer(p, targetFile: targetFile),
-                        )))
+                    ..optionalParameters
+                        .addAll(route.parameters.map((p) => Parameter(
+                              (b) => b
+                                ..name = p.argumentName
+                                ..named = true
+                                ..required = p.isRequired
+                                ..type = typeRefer(p, targetFile: targetFile),
+                            )))
                     ..returns = typeRefer(
                       route.returnType,
                       targetFile: targetFile,
@@ -100,7 +120,8 @@ class LibraryGenerator {
                       ..type = const Reference('T?'),
                   ))
                   ..returns = const Reference('void')
-                  ..body = const Reference('Get.back<T>').call([], {'result': const Reference('result')}).code,
+                  ..body = const Reference('Get.back<T>')
+                      .call([], {'result': const Reference('result')}).code,
               ))
               ..methods.add(Method(
                 (b) => b
@@ -112,11 +133,15 @@ class LibraryGenerator {
                     (b) => b
                       ..name = 'widget'
                       ..named = true
-                      ..type = const Reference('Widget?', 'package:flutter/material.dart'),
+                      ..type = const Reference(
+                          'Widget?', 'package:flutter/material.dart'),
                   ))
                   ..returns = const Reference('Future<T?>')
-                  ..body = const Reference('Get.dialog<T>')
-                      .call([const Reference('widget').ifNullThen(const Reference('SizedBox.shrink', 'package:flutter/material.dart').constInstance([]))]).code,
+                  ..body = const Reference('Get.dialog<T>').call([
+                    const Reference('widget').ifNullThen(const Reference(
+                            'SizedBox.shrink', 'package:flutter/material.dart')
+                        .constInstance([]))
+                  ]).code,
               ))),
             Class(
               (b) => b
@@ -127,7 +152,8 @@ class LibraryGenerator {
                       ..name = CaseUtil(route.routeName).camelCase
                       ..static = true
                       ..modifier = FieldModifier.constant
-                      ..assignment = Code("'${route.routeName.startsWith('/') ? '' : '/'}${route.routeName}'"),
+                      ..assignment = Code(
+                          "'${route.routeName.startsWith('/') ? '' : '/'}${route.routeName}'"),
                   );
                 })),
             ),

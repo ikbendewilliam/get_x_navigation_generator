@@ -42,7 +42,8 @@ class ThirdPage extends StatelessWidget {
             Text('Got data: ${previousValue?.hello}'),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: () => MainNavigator.instance.goBack(result: previousValue),
+              onPressed: () =>
+                  MainNavigator.instance.goBack(result: previousValue),
               child: const Text('Go back'),
             ),
             const SizedBox(height: 16),

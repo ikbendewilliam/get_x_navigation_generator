@@ -1,6 +1,6 @@
 # GetXNavigationGenerator
 
-Builder to generate a getX navigator for your pages with a simple annotation.
+[GetXNavigationGenerator](https://pub.dev/packages/get_x_navigation_generator) is a builder to generate a getX navigator for your pages with a simple annotation.
 
 ## Features
 
@@ -44,18 +44,17 @@ class BaseNavigator {
   static final pages = [
     GetPage(
       name: RouteNames.firstPage,
-      page: () => FirstPage(key: (Get.arguments?['key'] as _i2.Key?)),
+      page: () => FirstPage(key: (Get.arguments?['key'] as Key?)),
     ),
   ];
 
-  Future<void> goToFirstPage({_i2.Key? key}) async => Get.toNamed<dynamic>(
+  Future<void> goToFirstPage({Key? key}) async => Get.toNamed<dynamic>(
         RouteNames.firstPage,
         arguments: {'key': key},
       );
 
   void goBack<T>({T? result}) => Get.back<T>(result: result);
-  Future<T?> showCustomDialog<T>({_i2.Widget? widget}) async =>
-      Get.dialog<T>(widget ?? const _i2.SizedBox.shrink());
+  Future<T?> showCustomDialog<T>({Widget? widget}) async => Get.dialog<T>(widget ?? const SizedBox.shrink());
 }
 
 class RouteNames {

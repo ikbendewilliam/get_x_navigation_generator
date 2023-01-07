@@ -20,6 +20,8 @@ class GetXNavigationGenerator implements Generator {
             ).resolve(e),
           ),
     );
-    return routesInStep.isNotEmpty ? jsonEncode(routesInStep.map((e) => e.toMap()).toList()) : null;
+    return routesInStep.isNotEmpty
+        ? jsonEncode(routesInStep.map((e) => e.toMap()).toList())
+        : null;
   }
 }

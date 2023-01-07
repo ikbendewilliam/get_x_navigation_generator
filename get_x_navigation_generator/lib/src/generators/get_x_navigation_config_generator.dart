@@ -10,13 +10,16 @@ import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
 import 'package:glob/glob.dart';
 import 'package:source_gen/source_gen.dart';
 
-class GetXNavigationConfigGenerator extends GeneratorForAnnotation<GetXNavigator> {
+class GetXNavigationConfigGenerator
+    extends GeneratorForAnnotation<GetXNavigator> {
   static const _navigatorClassNameDefault = 'BaseNavigator';
 
   @override
-  dynamic generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) async {
+  dynamic generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) async {
     final configFiles = Glob("**.get_x_navigation.json");
-    final navigatorClassName = annotation.peek('navigatorClassName')?.stringValue;
+    final navigatorClassName =
+        annotation.peek('navigatorClassName')?.stringValue;
 
     final jsonData = <Map>[];
     await for (final id in buildStep.findAssets(configFiles)) {

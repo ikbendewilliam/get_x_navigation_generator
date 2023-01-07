@@ -45,11 +45,15 @@ class GetXRouteConfig {
   factory GetXRouteConfig.fromMap(Map<String, dynamic> map) {
     return GetXRouteConfig(
       type: ImportableType.fromMap(map['type']),
-      returnType: map['returnType'] != null ? ImportableType.fromMap(map['returnType']) : null,
+      returnType: map['returnType'] != null
+          ? ImportableType.fromMap(map['returnType'])
+          : null,
       routeName: map['routeName'] ?? '',
       constructorName: map['constructorName'] ?? '',
-      navigationType: NavigationType.values.firstWhereOrNull((e) => e.index == map['navigationType']),
-      parameters: List<ImportableType>.from(map['parameters']?.map((x) => ImportableType.fromMap(x))),
+      navigationType: NavigationType.values
+          .firstWhereOrNull((e) => e.index == map['navigationType']),
+      parameters: List<ImportableType>.from(
+          map['parameters']?.map((x) => ImportableType.fromMap(x))),
     );
   }
 }

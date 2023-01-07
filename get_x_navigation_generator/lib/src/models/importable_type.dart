@@ -35,7 +35,8 @@ class ImportableType {
       name: map['name'],
       isRequired: map['isRequired'] ?? false,
       isNullable: map['isNullable'] ?? false,
-      typeArguments: List<ImportableType>.from(map['typeArguments']?.map((x) => ImportableType.fromMap(x))),
+      typeArguments: List<ImportableType>.from(
+          map['typeArguments']?.map((x) => ImportableType.fromMap(x))),
     );
   }
 
@@ -58,6 +59,11 @@ class ImportableType {
 
   @override
   int get hashCode {
-    return import.hashCode ^ className.hashCode ^ name.hashCode ^ isRequired.hashCode ^ isNullable.hashCode ^ typeArguments.hashCode;
+    return import.hashCode ^
+        className.hashCode ^
+        name.hashCode ^
+        isRequired.hashCode ^
+        isNullable.hashCode ^
+        typeArguments.hashCode;
   }
 }

@@ -13,5 +13,6 @@ Builder getXNavigationBuilder(BuilderOptions options) {
 }
 
 Builder getXNavigationConfigBuilder(BuilderOptions options) {
-  return LibraryBuilder(GetXNavigationConfigGenerator(), generatedExtension: '.g.dart');
+  return LibraryBuilder(GetXNavigationConfigGenerator(),
+      generatedExtension: '.g.dart');
 }

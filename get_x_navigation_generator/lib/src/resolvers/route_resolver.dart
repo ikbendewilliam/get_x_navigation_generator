@@ -7,12 +7,14 @@ import 'package:source_gen/source_gen.dart';
 import 'importable_type_resolver.dart';
 
 const TypeChecker _getXRouteChecker = TypeChecker.fromRuntime(GetXRoute);
-const TypeChecker _constructorChecker = TypeChecker.fromRuntime(GetXRouteConstructor);
+const TypeChecker _constructorChecker =
+    TypeChecker.fromRuntime(GetXRouteConstructor);
 
 class RouteResolver {
   final ImportableTypeResolverImpl _typeResolver;
 
-  RouteResolver(List<LibraryElement> libs) : _typeResolver = ImportableTypeResolverImpl(libs);
+  RouteResolver(List<LibraryElement> libs)
+      : _typeResolver = ImportableTypeResolverImpl(libs);
 
   GetXRouteConfig resolve(ClassElement clazz) {
     final annotatedElement = clazz;
@@ -24,8 +26,12 @@ class RouteResolver {
     final getXRoute = ConstantReader(getXRouteAnnotation);
     final routeName = getXRoute.peek('routeName')?.stringValue ?? clazz.name;
     final returnType = getXRouteAnnotation?.getField('returnType');
-    final navigationType = NavigationType.values.firstWhereOrNull((element) => element.index == getXRoute.peek('navigationType')?.peek('index')?.intValue);
-    final returnTypeNullable = getXRouteAnnotation?.getField('returnTypeNullable')?.toBoolValue() ?? false;
+    final navigationType = NavigationType.values.firstWhereOrNull((element) =>
+        element.index ==
+        getXRoute.peek('navigationType')?.peek('index')?.intValue);
+    final returnTypeNullable =
+        getXRouteAnnotation?.getField('returnTypeNullable')?.toBoolValue() ??
+            false;
 
     final possibleFactories = <ExecutableElement>[
       ...clazz.methods.where((m) => m.isStatic),
