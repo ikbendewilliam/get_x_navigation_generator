@@ -12,14 +12,14 @@ dependencies:
   build: ^2.3.1
   code_builder: ^4.4.0
   collection: ^1.16.0
-  dart_style: 2.2.4
+  dart_style: ^2.2.4
   flutter:
     sdk: flutter
   glob: ^2.1.1
   path: ^1.8.2
   source_gen: ^1.2.6
-  get_x_navigation_generator_interface:
-    path: ../get_x_navigation_generator_interface
+  get_x_navigation_generator_interface: ^0.0.1
+    # path: ../get_x_navigation_generator_interface # for local development
 
 dev_dependencies:
   flutter_test:

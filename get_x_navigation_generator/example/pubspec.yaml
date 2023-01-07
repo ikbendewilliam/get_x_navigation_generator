@@ -8,8 +8,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get_x_navigation_generator_interface:
-    path: ../../get_x_navigation_generator_interface
+  get_x_navigation_generator_interface: ^0.0.1
+    # path: ../../get_x_navigation_generator_interface # for local development
   get: ^4.6.5
 
 dev_dependencies:
