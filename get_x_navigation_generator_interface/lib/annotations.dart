@@ -18,11 +18,9 @@ const getXNavigator = GetXNavigator();
 class GetXRoute {
   /// Override the default name of the route
   final String? routeName;
-
   final Type? returnType;
   final bool returnTypeNullable;
-
-  final NavigationType navigationType; // TODO: Different push types
+  final NavigationType navigationType;
 
   const GetXRoute({
     this.navigationType = NavigationType.push,
@@ -33,7 +31,7 @@ class GetXRoute {
 }
 
 enum NavigationType {
-  popAll,
+  popAllAndPush,
   popAndPush,
   push,
 }
@@ -41,3 +39,9 @@ enum NavigationType {
 /// const instance of [GetXRoute]
 /// with default arguments
 const getXRoute = GetXRoute();
+
+class GetXRouteConstructor {
+  const GetXRouteConstructor();
+}
+
+const getXRouteConstructor = GetXRouteConstructor();

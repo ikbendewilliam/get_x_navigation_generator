@@ -8,15 +8,17 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get_x_navigation_generator:
-    path: ../
-  get: 4.6.5
+  get_x_navigation_generator_interface:
+    path: ../../get_x_navigation_generator_interface
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   build_runner: ^2.3.3
+  get_x_navigation_generator:
+    path: ../
 
 flutter:
   uses-material-design: true

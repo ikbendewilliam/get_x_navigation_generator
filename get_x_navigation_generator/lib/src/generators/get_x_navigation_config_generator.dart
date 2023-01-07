@@ -4,7 +4,7 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
-import 'package:get_x_navigation_generator/src/annotations.dart';
+import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
 import 'package:get_x_navigation_generator/src/code_builder/library_builder.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
 import 'package:glob/glob.dart';

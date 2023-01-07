@@ -1,10 +1,13 @@
+import 'package:collection/collection.dart';
 import 'package:get_x_navigation_generator/src/models/importable_type.dart';
+import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
 
 class GetXRouteConfig {
   final ImportableType type;
   final ImportableType? returnType;
   final String routeName;
   final String constructorName;
+  final NavigationType? navigationType;
   final List<ImportableType> parameters;
 
   GetXRouteConfig({
@@ -12,8 +15,21 @@ class GetXRouteConfig {
     required this.routeName,
     required this.returnType,
     required this.constructorName,
+    required this.navigationType,
     required this.parameters,
   });
+
+  String get navigationTypeAsString {
+    switch (navigationType) {
+      case NavigationType.popAllAndPush:
+        return 'offAllNamed';
+      case NavigationType.popAndPush:
+        return 'offNamed';
+      case NavigationType.push:
+      case null:
+        return 'toNamed';
+    }
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -21,6 +37,7 @@ class GetXRouteConfig {
       'returnType': returnType?.toMap(),
       'routeName': routeName,
       'constructorName': constructorName,
+      'navigationType': navigationType?.index,
       'parameters': parameters.map((x) => x.toMap()).toList(),
     };
   }
@@ -31,24 +48,8 @@ class GetXRouteConfig {
       returnType: map['returnType'] != null ? ImportableType.fromMap(map['returnType']) : null,
       routeName: map['routeName'] ?? '',
       constructorName: map['constructorName'] ?? '',
+      navigationType: NavigationType.values.firstWhereOrNull((e) => e.index == map['navigationType']),
       parameters: List<ImportableType>.from(map['parameters']?.map((x) => ImportableType.fromMap(x))),
     );
-  }
-
-  @override
-  String toString() {
-    return 'GetXRouteConfig(type: $type, returnType: $returnType, routeName: $routeName, constructorName: $constructorName, parameters: $parameters)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is GetXRouteConfig && other.type == type && other.returnType == returnType && other.routeName == routeName && other.constructorName == constructorName;
-  }
-
-  @override
-  int get hashCode {
-    return type.hashCode ^ returnType.hashCode ^ routeName.hashCode ^ constructorName.hashCode ^ parameters.hashCode;
   }
 }
