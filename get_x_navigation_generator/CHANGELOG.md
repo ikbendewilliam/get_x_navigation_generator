@@ -1,3 +1,8 @@
+## 0.0.4 (2023-01-08)
+
+- Improved typing internally
+- Added T type for GetPage
+
 ## 0.0.3 (2023-01-08)
 
 - Changed generated file to .get_x_navigator.dart

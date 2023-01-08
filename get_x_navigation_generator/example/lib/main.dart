@@ -68,7 +68,7 @@ class _FirstPageState extends State<FirstPage> {
             ),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: () => MainNavigator.instance.showCustomDialog(
+              onPressed: () => MainNavigator.instance.showCustomDialog<void>(
                 widget: const AlertDialog(
                   title: Text('Hello'),
                   content: Text('World'),

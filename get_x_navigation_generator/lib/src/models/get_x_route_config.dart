@@ -34,7 +34,7 @@ class GetXRouteConfig {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'type': type.toMap(),
       'returnType': returnType?.toMap(),
       'routeName': routeName,
@@ -47,18 +47,20 @@ class GetXRouteConfig {
 
   factory GetXRouteConfig.fromMap(Map<String, dynamic> map) {
     return GetXRouteConfig(
-      type: ImportableType.fromMap(map['type']),
+      type: ImportableType.fromMap(map['type'] as Map<String, dynamic>),
       returnType: map['returnType'] != null
-          ? ImportableType.fromMap(map['returnType'])
+          ? ImportableType.fromMap(map['returnType'] as Map<String, dynamic>)
           : null,
-      routeName: map['routeName'] ?? '',
-      constructorName: map['constructorName'] ?? '',
+      routeName: map['routeName'] as String? ?? '',
+      constructorName: map['constructorName'] as String? ?? '',
       navigationType: NavigationType.values
           .firstWhereOrNull((e) => e.index == map['navigationType']),
-      parameters: List<ImportableType>.from(
-          map['parameters']?.map((x) => ImportableType.fromMap(x))),
-      middlewares: List<ImportableType>.from(
-          map['middlewares']?.map((x) => ImportableType.fromMap(x))),
+      parameters: List<ImportableType>.from(map['parameters']?.map(
+              (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
+          as Iterable),
+      middlewares: List<ImportableType>.from(map['middlewares']?.map(
+              (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
+          as Iterable),
     );
   }
 }

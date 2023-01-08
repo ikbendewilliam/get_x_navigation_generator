@@ -1,6 +1,6 @@
 name: get_x_navigation_generator
 description: Generate your getX navigator by annotating your screen 
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/ikbendewilliam/get_x_navigation_generator
 
 environment:

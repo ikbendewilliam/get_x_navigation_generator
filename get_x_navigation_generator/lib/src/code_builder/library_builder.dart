@@ -19,10 +19,6 @@ class LibraryGenerator {
       (b) => b
         ..directives.addAll([
           Directive.import('package:get/route_manager.dart'),
-          ...routes
-              .map((route) => route.type.import)
-              .whereType<String>()
-              .map((import) => Directive.import(import)),
         ])
         ..body.addAll(
           [
@@ -33,35 +29,50 @@ class LibraryGenerator {
                   ..name = 'pages'
                   ..static = true
                   ..modifier = FieldModifier.final$
-                  ..assignment = literalList(routes.map((route) =>
-                      const Reference('GetPage').call([], {
-                        'name': Reference(
-                            'RouteNames.${CaseUtil(route.routeName).camelCase}'),
-                        'page': Method(
-                          (b) => b
-                            ..name = ''
-                            ..body = Reference(
-                              route.constructorName == route.type.className ||
-                                      route.constructorName.isEmpty
-                                  ? route.type.className
-                                  : '${route.type.className}.${route.constructorName}',
-                              // typeRefer(route.type, targetFile: targetFile).url,
-                            ).call(
-                                [],
-                                route.parameters.asMap().map((_, p) => MapEntry(
-                                    p.argumentName,
-                                    Reference(
-                                            "Get.arguments?['${p.argumentName}']")
-                                        .asA(typeRefer(p,
-                                            targetFile: targetFile))))).code,
-                        ).closure,
-                        if (route.middlewares.isNotEmpty)
-                          'middlewares': literalList(route.middlewares
-                              .map((middleware) =>
-                                  typeRefer(middleware, targetFile: targetFile)
-                                      .call([]))
-                              .toList()),
-                      }))).code,
+                  ..assignment = literalList(routes
+                          .map((route) => TypeReference(
+                                (b) => b
+                                  ..symbol = 'GetPage'
+                                  ..types.add(route.returnType != null
+                                      ? typeRefer(route.returnType!,
+                                          targetFile: targetFile)
+                                      : const Reference('dynamic')),
+                              ).call([], {
+                                'name': Reference(
+                                    'RouteNames.${CaseUtil(route.routeName).camelCase}'),
+                                'page': Method(
+                                  (b) => b
+                                    ..name = ''
+                                    ..body = Reference(
+                                      route.constructorName ==
+                                                  route.type.className ||
+                                              route.constructorName.isEmpty
+                                          ? route.type.className
+                                          : '${route.type.className}.${route.constructorName}',
+                                      typeRefer(route.type,
+                                              targetFile: targetFile)
+                                          .url,
+                                    ).call(
+                                        [],
+                                        route.parameters.asMap().map((_, p) =>
+                                            MapEntry(
+                                                p.argumentName,
+                                                Reference(
+                                                        "Get.arguments?['${p.argumentName}']")
+                                                    .asA(typeRefer(
+                                                        p,
+                                                        targetFile:
+                                                            targetFile))))).code,
+                                ).closure,
+                                if (route.middlewares.isNotEmpty)
+                                  'middlewares': literalList(route.middlewares
+                                      .map((middleware) => typeRefer(middleware,
+                                              targetFile: targetFile)
+                                          .call([]))
+                                      .toList()),
+                              }))
+                          .toList())
+                      .code,
               ))
               ..methods.addAll(routes.map((route) {
                 final bodyCall = TypeReference(
@@ -81,9 +92,10 @@ class LibraryGenerator {
                 Code body;
                 if (route.returnType != null) {
                   body = Block((b) => b
-                    ..statements.add(declareFinal('result')
-                        .assign(bodyCall.awaited)
-                        .statement)
+                    ..statements.add(
+                        declareFinal('result', type: const Reference('dynamic'))
+                            .assign(bodyCall.awaited)
+                            .statement)
                     ..statements.add(const Reference('result')
                         .asA(typeRefer(route.returnType,
                             targetFile: targetFile, forceNullable: true))

@@ -18,7 +18,7 @@ class ImportableType {
   });
 
   Map<String, dynamic> toMap() {
-    return {
+    return <String, dynamic>{
       'import': import,
       'className': className,
       'name': name,
@@ -30,40 +30,14 @@ class ImportableType {
 
   factory ImportableType.fromMap(Map<String, dynamic> map) {
     return ImportableType(
-      import: map['import'],
-      className: map['className'] ?? '',
-      name: map['name'],
-      isRequired: map['isRequired'] ?? false,
-      isNullable: map['isNullable'] ?? false,
-      typeArguments: List<ImportableType>.from(
-          map['typeArguments']?.map((x) => ImportableType.fromMap(x))),
+      import: map['import'] as String?,
+      className: map['className'] as String? ?? '',
+      name: map['name'] as String?,
+      isRequired: map['isRequired'] == true,
+      isNullable: map['isNullable'] == true,
+      typeArguments: List<ImportableType>.from(map['typeArguments']?.map(
+              (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
+          as Iterable),
     );
-  }
-
-  @override
-  String toString() {
-    return 'ImportableType(import: $import, className: $className, name: $name, isRequired: $isRequired, isNullable: $isNullable, typeArguments: $typeArguments)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is ImportableType &&
-        other.import == import &&
-        other.className == className &&
-        other.name == name &&
-        other.isRequired == isRequired &&
-        other.isNullable == isNullable;
-  }
-
-  @override
-  int get hashCode {
-    return import.hashCode ^
-        className.hashCode ^
-        name.hashCode ^
-        isRequired.hashCode ^
-        isNullable.hashCode ^
-        typeArguments.hashCode;
   }
 }

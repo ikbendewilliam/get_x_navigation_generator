@@ -4,9 +4,9 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
 import 'package:get_x_navigation_generator/src/code_builder/library_builder.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
+import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
 import 'package:glob/glob.dart';
 import 'package:source_gen/source_gen.dart';
 
@@ -23,8 +23,8 @@ class GetXNavigationConfigGenerator
 
     final jsonData = <Map>[];
     await for (final id in buildStep.findAssets(configFiles)) {
-      final json = jsonDecode(await buildStep.readAsString(id));
-      jsonData.addAll((json as List).map((e) => e as Map).toList());
+      final dynamic json = jsonDecode(await buildStep.readAsString(id));
+      jsonData.addAll((json as List).map((dynamic e) => e as Map).toList());
     }
 
     final routes = <GetXRouteConfig>{};
