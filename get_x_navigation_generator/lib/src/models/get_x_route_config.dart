@@ -9,6 +9,7 @@ class GetXRouteConfig {
   final String constructorName;
   final NavigationType? navigationType;
   final List<ImportableType> parameters;
+  final List<ImportableType> middlewares;
 
   GetXRouteConfig({
     required this.type,
@@ -17,6 +18,7 @@ class GetXRouteConfig {
     required this.constructorName,
     required this.navigationType,
     required this.parameters,
+    required this.middlewares,
   });
 
   String get navigationTypeAsString {
@@ -39,6 +41,7 @@ class GetXRouteConfig {
       'constructorName': constructorName,
       'navigationType': navigationType?.index,
       'parameters': parameters.map((x) => x.toMap()).toList(),
+      'middlewares': middlewares.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -54,6 +57,8 @@ class GetXRouteConfig {
           .firstWhereOrNull((e) => e.index == map['navigationType']),
       parameters: List<ImportableType>.from(
           map['parameters']?.map((x) => ImportableType.fromMap(x))),
+      middlewares: List<ImportableType>.from(
+          map['middlewares']?.map((x) => ImportableType.fromMap(x))),
     );
   }
 }

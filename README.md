@@ -1,6 +1,6 @@
 # GetXNavigationGenerator
 
-Builder to generate a getX navigator for your pages with a simple annotation.
+[GetXNavigationGenerator](https://pub.dev/packages/get_x_navigation_generator) is a builder to generate a getX navigator for your pages with a simple annotation.
 
 ## Features
 
@@ -54,7 +54,6 @@ class BaseNavigator {
       );
 
   void goBack<T>({T? result}) => Get.back<T>(result: result);
-  
   Future<T?> showCustomDialog<T>({Widget? widget}) async => Get.dialog<T>(widget ?? const SizedBox.shrink());
 }
 
@@ -75,6 +74,7 @@ class RouteNames {
 - `returnType`: The return type of the route. Default: `void` (Note: `?` is not valid, use `returnTypeNullable` instead)
 - `returnTypeNullable`: If the return type is nullable. Default: `false`
 - `navigationType`: The type of navigation. Default: `NavigationType.push`, valid options are: `popAllAndPush`, `popAndPush` and `push`
+- `middlewares`: A list of middleware types to use for the route. Default: `[]`. **Note:** an annotation needs to be constant and middlewares are not, so you need to pass the type of the middleware
 
 - `@getXRouteConstructor`: The constructor to use for the route. Defaults to unnamed constructor. This can be any constructor or static method
 
@@ -84,6 +84,9 @@ class RouteNames {
   returnType: bool,
   returnTypeNullable: true,
   navigationType: NavigationType.popAndPush,
+  middlewares: [
+    MiddlewareExample,
+  ],
 )
 class FirstPage extends StatelessWidget {
     final int someValue;

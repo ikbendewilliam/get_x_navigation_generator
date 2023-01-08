@@ -29,11 +29,17 @@ class GetXRoute {
   /// The type of navigation to use
   final NavigationType navigationType;
 
+  /// The middlewares to use for this route
+  /// Note: an annotation needs to be constant and middlewares are not,
+  /// so you need to pass the type of the middleware
+  final List<Type>? middlewares;
+
   const GetXRoute({
     this.navigationType = NavigationType.push,
     this.routeName,
     this.returnType,
     this.returnTypeNullable = false,
+    this.middlewares,
   });
 }
 

@@ -55,6 +55,12 @@ class LibraryGenerator {
                                         .asA(typeRefer(p,
                                             targetFile: targetFile))))).code,
                         ).closure,
+                        if (route.middlewares.isNotEmpty)
+                          'middlewares': literalList(route.middlewares
+                              .map((middleware) =>
+                                  typeRefer(middleware, targetFile: targetFile)
+                                      .call([]))
+                              .toList()),
                       }))).code,
               ))
               ..methods.addAll(routes.map((route) {

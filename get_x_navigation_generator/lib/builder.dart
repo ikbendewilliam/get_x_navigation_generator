@@ -15,5 +15,6 @@ Builder getXNavigationBuilder(BuilderOptions options) {
 
 /// A builder that generates the navigator class.
 Builder getXNavigationConfigBuilder(BuilderOptions options) {
-  return LibraryBuilder(GetXNavigationConfigGenerator(), generatedExtension: '.g.dart');
+  return LibraryBuilder(GetXNavigationConfigGenerator(),
+      generatedExtension: '.g.dart');
 }

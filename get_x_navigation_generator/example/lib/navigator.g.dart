@@ -11,6 +11,7 @@ import 'package:example/third_page.dart';
 import 'package:flutter/material.dart' as _i2;
 import 'package:get/route_manager.dart';
 
+import 'middleware_example.dart' as _i3;
 import 'some_model.dart' as _i1;
 
 class BaseNavigator {
@@ -33,6 +34,7 @@ class BaseNavigator {
         subTitle: (Get.arguments?['subTitle'] as String?),
         key: (Get.arguments?['key'] as _i2.Key?),
       ),
+      middlewares: [_i3.MiddlewareExample()],
     ),
   ];
 

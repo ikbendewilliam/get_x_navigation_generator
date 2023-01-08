@@ -32,6 +32,8 @@ class RouteResolver {
     final returnTypeNullable =
         getXRouteAnnotation?.getField('returnTypeNullable')?.toBoolValue() ??
             false;
+    final middlewares =
+        getXRouteAnnotation?.getField('middlewares')?.toListValue() ?? [];
 
     final possibleFactories = <ExecutableElement>[
       ...clazz.methods.where((m) => m.isStatic),
@@ -61,6 +63,9 @@ class RouteResolver {
           .toList(),
       routeName: routeName,
       navigationType: navigationType,
+      middlewares: middlewares
+          .map((e) => _typeResolver.resolveType(e.toTypeValue()!))
+          .toList(),
     );
   }
 }

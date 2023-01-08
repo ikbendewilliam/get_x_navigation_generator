@@ -1,3 +1,4 @@
+import 'package:example/middleware_example.dart';
 import 'package:example/navigator.dart';
 import 'package:example/some_model.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,9 @@ import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_
   routeName: 'custom-name',
   returnType: bool,
   navigationType: NavigationType.popAllAndPush,
+  middlewares: [
+    MiddlewareExample,
+  ],
 )
 class SecondPage extends StatelessWidget {
   final String title;
