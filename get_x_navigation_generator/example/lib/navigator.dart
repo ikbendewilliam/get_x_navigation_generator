@@ -1,6 +1,6 @@
 import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
 
-import 'navigator.g.dart';
+import 'navigator.get_x_navigator.dart';
 
 @getXNavigator
 class MainNavigator extends BaseNavigator {
