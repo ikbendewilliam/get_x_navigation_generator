@@ -80,7 +80,7 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
   ImportableType resolveFunctionType(FunctionType function,
       [ExecutableElement? executableElement]) {
     final functionElement =
-        executableElement ?? function.element ?? function.alias?.element;
+        executableElement ?? function.element2 ?? function.alias?.element;
     if (functionElement == null) {
       throw 'Can not resolve function type \nTry using an alias e.g typedef MyFunction = ${function.getDisplayString(withNullability: false)};';
     }
@@ -88,7 +88,7 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
     var functionName = displayName;
 
     Element elementToImport = functionElement;
-    var enclosingElement = functionElement.enclosingElement;
+    var enclosingElement = functionElement.enclosingElement3;
 
     if (enclosingElement != null && enclosingElement is ClassElement) {
       functionName = '${enclosingElement.displayName}.$displayName';
@@ -106,13 +106,13 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
     final importableTypes = <ImportableType>[];
     if (typeToCheck is ParameterizedType) {
       for (DartType type in typeToCheck.typeArguments) {
-        if (type.element is TypeParameterElement) {
+        if (type.element2 is TypeParameterElement) {
           importableTypes.add(const ImportableType(className: 'dynamic'));
         } else {
           importableTypes.add(ImportableType(
-            className: type.element?.name?.replaceAll('?', '') ??
+            className: type.element2?.name?.replaceAll('?', '') ??
                 type.getDisplayString(withNullability: false),
-            import: resolveImport(type.element),
+            import: resolveImport(type.element2),
             isNullable: type.nullabilitySuffix == NullabilitySuffix.question,
             typeArguments: _resolveTypeArguments(type),
           ));
@@ -131,11 +131,11 @@ class ImportableTypeResolverImpl extends ImportableTypeResolver {
   }) {
     return ImportableType(
       className:
-          type.element?.name ?? type.getDisplayString(withNullability: false),
+          type.element2?.name ?? type.getDisplayString(withNullability: false),
       name: name,
       isNullable:
           forceNullable || type.nullabilitySuffix == NullabilitySuffix.question,
-      import: resolveImport(type.element),
+      import: resolveImport(type.element2),
       isRequired: isRequired,
       typeArguments: _resolveTypeArguments(type),
     );

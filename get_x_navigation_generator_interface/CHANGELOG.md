@@ -1,3 +1,7 @@
+## 0.0.3 (2023-01-09)
+
+- Lowered the minimum required Dart SDK version to 2.18.0
+
 ## 0.0.2 (2023-01-08)
 
 - Added support for middlewares
