@@ -5,8 +5,14 @@ class GetXNavigator {
   /// If not provided 'BaseNavigator' will be used
   final String? navigatorClassName;
 
+  /// Override the default page type [GetPage] to
+  /// use a custom page type so you can add custom
+  /// arguments to the page. Must extend GetPage
+  final Type? pageType;
+
   const GetXNavigator({
     this.navigatorClassName,
+    this.pageType,
   });
 }
 

@@ -67,6 +67,7 @@ class RouteNames {
 ### GetXNavigator
 
 - `name`: The name of the navigator class. Default: `BaseNavigator`
+- `pageType`: The type of the generated pages, must extend GetPage. Default: `GetPage`
 
 ### GetXRoute
 

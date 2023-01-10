@@ -3,12 +3,12 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.4 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  get_x_navigation_generator_interface: ^0.0.3
+  get_x_navigation_generator_interface: ^0.0.4
   # get_x_navigation_generator_interface: # for local development
     # path: ../../get_x_navigation_generator_interface
   get: ^4.6.5

@@ -1,17 +1,20 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:get_x_navigation_generator/src/case_utils.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
+import 'package:get_x_navigation_generator/src/models/importable_type.dart';
 import 'package:get_x_navigation_generator/src/utils.dart';
 
 class LibraryGenerator {
   late Set<GetXRouteConfig> routes;
   final String className;
   final Uri? targetFile;
+  final ImportableType? pageType;
 
   LibraryGenerator({
     required this.routes,
     required this.className,
     this.targetFile,
+    this.pageType,
   });
 
   Library generate() {
@@ -31,12 +34,19 @@ class LibraryGenerator {
                   ..modifier = FieldModifier.final$
                   ..assignment = literalList(routes
                           .map((route) => TypeReference(
-                                (b) => b
-                                  ..symbol = 'GetPage'
-                                  ..types.add(route.returnType != null
-                                      ? typeRefer(route.returnType!,
-                                          targetFile: targetFile)
-                                      : const Reference('dynamic')),
+                                (b) {
+                                  final pageTypeRef = pageType == null
+                                      ? null
+                                      : typeRefer(pageType!,
+                                          targetFile: targetFile);
+                                  b
+                                    ..symbol = pageTypeRef?.symbol ?? 'GetPage'
+                                    ..url = pageTypeRef?.url
+                                    ..types.add(route.returnType != null
+                                        ? typeRefer(route.returnType!,
+                                            targetFile: targetFile)
+                                        : const Reference('dynamic'));
+                                },
                               ).call([], {
                                 'name': Reference(
                                     'RouteNames.${CaseUtil(route.routeName).camelCase}'),

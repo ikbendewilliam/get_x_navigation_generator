@@ -1,3 +1,7 @@
+## 0.0.4 (2023-01-10)
+
+- Added support for different pageType
+
 ## 0.0.3 (2023-01-09)
 
 - Lowered the minimum required Dart SDK version to 2.18.0

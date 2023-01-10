@@ -1,9 +1,13 @@
+import 'package:example/base_page.dart';
 import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
 
 import 'navigator.get_x_navigator.dart';
 
-@getXNavigator
-class MainNavigator extends BaseNavigator {
+@GetXNavigator(
+  navigatorClassName: 'GeneratedNavigator',
+  pageType: BasePage,
+)
+class MainNavigator extends GeneratedNavigator {
   MainNavigator._();
 
   // Note: use GetIt or something similar to inject this rather than declaring a singleton here
@@ -13,5 +17,5 @@ class MainNavigator extends BaseNavigator {
 
   static String get initialRoute => RouteNames.firstPage;
 
-  static final pages = BaseNavigator.pages;
+  static final pages = GeneratedNavigator.pages;
 }

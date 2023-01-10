@@ -5,58 +5,59 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:flutter/material.dart' as _i3;
+import 'package:flutter/material.dart' as _i4;
 import 'package:get/route_manager.dart';
 
-import 'main.dart' as _i4;
-import 'middleware_example.dart' as _i6;
-import 'second_page.dart' as _i5;
-import 'some_model.dart' as _i1;
-import 'third_page.dart' as _i2;
+import 'base_page.dart' as _i1;
+import 'main.dart' as _i5;
+import 'middleware_example.dart' as _i7;
+import 'second_page.dart' as _i6;
+import 'some_model.dart' as _i2;
+import 'third_page.dart' as _i3;
 
-class BaseNavigator {
+class GeneratedNavigator {
   static final pages = [
-    GetPage<_i1.SomeModel?>(
+    _i1.BasePage<_i2.SomeModel?>(
       name: RouteNames.thirdPage,
-      page: () => _i2.ThirdPage.withValue(
-        previousValue: (Get.arguments?['previousValue'] as _i1.SomeModel?),
-        key: (Get.arguments?['key'] as _i3.Key?),
+      page: () => _i3.ThirdPage.withValue(
+        previousValue: (Get.arguments?['previousValue'] as _i2.SomeModel?),
+        key: (Get.arguments?['key'] as _i4.Key?),
       ),
     ),
-    GetPage<dynamic>(
+    _i1.BasePage<dynamic>(
       name: RouteNames.firstPage,
-      page: () => _i4.FirstPage(key: (Get.arguments?['key'] as _i3.Key?)),
+      page: () => _i5.FirstPage(key: (Get.arguments?['key'] as _i4.Key?)),
     ),
-    GetPage<bool>(
+    _i1.BasePage<bool>(
       name: RouteNames.customName,
-      page: () => _i5.SecondPage(
+      page: () => _i6.SecondPage(
         title: (Get.arguments?['title'] as String),
         subTitle: (Get.arguments?['subTitle'] as String?),
-        key: (Get.arguments?['key'] as _i3.Key?),
+        key: (Get.arguments?['key'] as _i4.Key?),
       ),
-      middlewares: [_i6.MiddlewareExample()],
+      middlewares: [_i7.MiddlewareExample()],
     ),
   ];
 
-  Future<_i1.SomeModel?> goToThirdPage({
-    required _i1.SomeModel? previousValue,
-    _i3.Key? key,
+  Future<_i2.SomeModel?> goToThirdPage({
+    required _i2.SomeModel? previousValue,
+    _i4.Key? key,
   }) async {
     final dynamic result = await Get.toNamed<dynamic>(
       RouteNames.thirdPage,
       arguments: {'previousValue': previousValue, 'key': key},
     );
-    return (result as _i1.SomeModel?);
+    return (result as _i2.SomeModel?);
   }
 
-  Future<void> goToFirstPage({_i3.Key? key}) async => Get.toNamed<dynamic>(
+  Future<void> goToFirstPage({_i4.Key? key}) async => Get.toNamed<dynamic>(
         RouteNames.firstPage,
         arguments: {'key': key},
       );
   Future<bool?> goToCustomName({
     required String title,
     String? subTitle,
-    _i3.Key? key,
+    _i4.Key? key,
   }) async {
     final dynamic result = await Get.offAllNamed<dynamic>(
       RouteNames.customName,
@@ -66,8 +67,8 @@ class BaseNavigator {
   }
 
   void goBack<T>({T? result}) => Get.back<T>(result: result);
-  Future<T?> showCustomDialog<T>({_i3.Widget? widget}) async =>
-      Get.dialog<T>(widget ?? const _i3.SizedBox.shrink());
+  Future<T?> showCustomDialog<T>({_i4.Widget? widget}) async =>
+      Get.dialog<T>(widget ?? const _i4.SizedBox.shrink());
 }
 
 class RouteNames {
