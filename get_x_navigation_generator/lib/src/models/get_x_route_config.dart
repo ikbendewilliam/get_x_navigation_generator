@@ -1,12 +1,15 @@
 import 'package:collection/collection.dart';
 import 'package:get_x_navigation_generator/src/models/importable_type.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
+import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 
 class GetXRouteConfig {
-  final ImportableType type;
-  final ImportableType? returnType;
+  final bool generateMethod;
+  final bool generatePage;
+  final bool isFullscreenDialog;
   final String routeName;
   final String constructorName;
+  final ImportableType type;
+  final ImportableType? returnType;
   final NavigationType? navigationType;
   final List<ImportableType> parameters;
   final List<ImportableType> middlewares;
@@ -19,6 +22,9 @@ class GetXRouteConfig {
     required this.navigationType,
     required this.parameters,
     required this.middlewares,
+    required this.generateMethod,
+    required this.generatePage,
+    required this.isFullscreenDialog,
   });
 
   String get navigationTypeAsString {
@@ -42,6 +48,9 @@ class GetXRouteConfig {
       'navigationType': navigationType?.index,
       'parameters': parameters.map((x) => x.toMap()).toList(),
       'middlewares': middlewares.map((x) => x.toMap()).toList(),
+      'isFullscreenDialog': isFullscreenDialog,
+      'generateMethod': generateMethod,
+      'generatePage': generatePage,
     };
   }
 
@@ -61,6 +70,9 @@ class GetXRouteConfig {
       middlewares: List<ImportableType>.from(map['middlewares']?.map(
               (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
           as Iterable),
+      isFullscreenDialog: map['isFullscreenDialog'] as bool,
+      generateMethod: map['generateMethod'] as bool,
+      generatePage: map['generatePage'] as bool,
     );
   }
 }

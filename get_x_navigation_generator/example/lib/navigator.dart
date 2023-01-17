@@ -1,5 +1,5 @@
 import 'package:example/base_page.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
+import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 
 import 'navigator.get_x_navigator.dart';
 

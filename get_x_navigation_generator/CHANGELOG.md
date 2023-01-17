@@ -1,3 +1,8 @@
+## 0.0.7 (2023-01-17)
+
+- Added generateMethod and generatePage options
+- Added isFullscreenDialog option
+
 ## 0.0.6 (2023-01-10)
 
 - Added support for different pageType

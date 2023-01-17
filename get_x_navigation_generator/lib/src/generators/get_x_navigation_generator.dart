@@ -3,7 +3,7 @@ import 'dart:convert';
 
 import 'package:build/build.dart';
 import 'package:get_x_navigation_generator/src/resolvers/route_resolver.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
+import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 import 'package:source_gen/source_gen.dart';
 
 const TypeChecker _typeChecker = TypeChecker.fromRuntime(GetXRoute);

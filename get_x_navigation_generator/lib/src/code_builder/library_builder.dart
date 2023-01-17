@@ -33,6 +33,7 @@ class LibraryGenerator {
                   ..static = true
                   ..modifier = FieldModifier.final$
                   ..assignment = literalList(routes
+                          .where((route) => route.generatePage)
                           .map((route) => TypeReference(
                                 (b) {
                                   final pageTypeRef = pageType == null
@@ -80,11 +81,14 @@ class LibraryGenerator {
                                               targetFile: targetFile)
                                           .call([]))
                                       .toList()),
+                                if (route.isFullscreenDialog)
+                                  'fullscreenDialog': literalBool(true),
                               }))
                           .toList())
                       .code,
               ))
-              ..methods.addAll(routes.map((route) {
+              ..methods.addAll(
+                  routes.where((route) => route.generateMethod).map((route) {
                 final bodyCall = TypeReference(
                   (b) => b
                     ..symbol = 'Get.${route.navigationTypeAsString}'
@@ -174,14 +178,17 @@ class LibraryGenerator {
             Class(
               (b) => b
                 ..name = 'RouteNames'
-                ..fields.addAll(routes.map((route) {
+                ..fields.addAll(routes
+                    .map((route) => route.routeName)
+                    .toSet()
+                    .map((routeName) {
                   return Field(
                     (b) => b
-                      ..name = CaseUtil(route.routeName).camelCase
+                      ..name = CaseUtil(routeName).camelCase
                       ..static = true
                       ..modifier = FieldModifier.constant
                       ..assignment = Code(
-                          "'${route.routeName.startsWith('/') ? '' : '/'}${route.routeName}'"),
+                          "'${routeName.startsWith('/') ? '' : '/'}$routeName'"),
                   );
                 })),
             ),

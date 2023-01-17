@@ -40,12 +40,40 @@ class GetXRoute {
   /// so you need to pass the type of the middleware
   final List<Type>? middlewares;
 
+  /// Open the route in fullscreen mode
+  final bool isFullscreenDialog;
+
+  /// Enable/Disable the generation of the page, use this if you separate the
+  /// declaration of the page and the method. This is useful if you have
+  /// a shared package that declares the method and a project that declares
+  /// the page.
+  ///
+  /// **Note** that the routeName has to match with the generated method routeName
+  ///
+  /// if the page has different arguments than the method, you can create a
+  /// named constructor and add the [@getXRouteConstructor] annotation to the BaseWidget
+  final bool generatePage;
+
+  /// Enable/Disable the generation of the method, use this if you separate the
+  /// declaration of the page and the method. This is useful if you have
+  /// a shared package that declares the method and a project that declares
+  /// the page.
+  ///
+  /// **Note** that the routeName has to match with the generated page routeName
+  ///
+  /// if the page has different arguments than the method, you can create a
+  /// named constructor and add the [@getXRouteConstructor] annotation to the BaseWidget
+  final bool generateMethod;
+
   const GetXRoute({
     this.navigationType = NavigationType.push,
     this.routeName,
     this.returnType,
-    this.returnTypeNullable = false,
     this.middlewares,
+    this.returnTypeNullable = false,
+    this.isFullscreenDialog = false,
+    this.generatePage = true,
+    this.generateMethod = true,
   });
 }
 

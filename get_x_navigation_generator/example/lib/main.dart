@@ -1,8 +1,10 @@
+import 'dart:math';
+
 import 'package:example/navigator.dart';
 import 'package:example/some_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
+import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -65,6 +67,13 @@ class _FirstPageState extends State<FirstPage> {
             MaterialButton(
               onPressed: _goToThirdPage,
               child: const Text('Go to third page'),
+            ),
+            const SizedBox(height: 16),
+            MaterialButton(
+              onPressed: () => MainNavigator.instance.goToImplementedPage(
+                someVariable: Random().nextBool(),
+              ),
+              child: const Text('Go to base/implemented page'),
             ),
             const SizedBox(height: 16),
             MaterialButton(

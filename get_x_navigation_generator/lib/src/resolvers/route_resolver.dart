@@ -1,7 +1,8 @@
 import 'package:analyzer/dart/element/element.dart';
 import 'package:collection/collection.dart';
+import 'package:get_x_navigation_generator/src/case_utils.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
+import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 import 'package:source_gen/source_gen.dart';
 
 import 'importable_type_resolver.dart';
@@ -24,7 +25,8 @@ class RouteResolver {
     );
 
     final getXRoute = ConstantReader(getXRouteAnnotation);
-    final routeName = getXRoute.peek('routeName')?.stringValue ?? clazz.name;
+    final routeName = getXRoute.peek('routeName')?.stringValue ??
+        CaseUtil(clazz.name).kebabCase;
     final returnType = getXRouteAnnotation?.getField('returnType');
     final navigationType = NavigationType.values.firstWhereOrNull((element) =>
         element.index ==
@@ -66,6 +68,10 @@ class RouteResolver {
       middlewares: middlewares
           .map((e) => _typeResolver.resolveType(e.toTypeValue()!))
           .toList(),
+      isFullscreenDialog:
+          getXRoute.peek('isFullscreenDialog')?.boolValue ?? false,
+      generateMethod: getXRoute.peek('generateMethod')?.boolValue ?? true,
+      generatePage: getXRoute.peek('generatePage')?.boolValue ?? true,
     );
   }
 }

@@ -1,3 +1,9 @@
+## 0.0.5 (2023-01-17)
+
+- Added generateMethod and generatePage options
+- Added isFullscreenDialog option
+- Renamed to get_x_navigation_generator_annotations
+
 ## 0.0.4 (2023-01-10)
 
 - Added support for different pageType

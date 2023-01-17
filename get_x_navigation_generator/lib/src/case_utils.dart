@@ -43,6 +43,8 @@ class CaseUtil {
 
   String get snakeCase => _getSnakeCase();
 
+  String get kebabCase => _getSnakeCase(separator: '-');
+
   String get camelCase => _getCamelCase();
 
   String get upperCamelCase => _uppserCamelCase();

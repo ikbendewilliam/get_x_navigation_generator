@@ -2,7 +2,7 @@ import 'package:example/middleware_example.dart';
 import 'package:example/navigator.dart';
 import 'package:example/some_model.dart';
 import 'package:flutter/material.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
+import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 
 @GetXRoute(
   routeName: 'custom-name',

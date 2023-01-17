@@ -7,7 +7,7 @@ import 'package:dart_style/dart_style.dart';
 import 'package:get_x_navigation_generator/src/code_builder/library_builder.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
 import 'package:get_x_navigation_generator/src/resolvers/importable_type_resolver.dart';
-import 'package:get_x_navigation_generator_interface/get_x_navigation_generator_interface.dart';
+import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 import 'package:glob/glob.dart';
 import 'package:source_gen/source_gen.dart';
 

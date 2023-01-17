@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart' as _i4;
 import 'package:get/route_manager.dart';
 
+import 'abstract_page_implementation.dart' as _i8;
 import 'base_page.dart' as _i1;
 import 'main.dart' as _i5;
 import 'middleware_example.dart' as _i7;
@@ -37,8 +38,24 @@ class GeneratedNavigator {
       ),
       middlewares: [_i7.MiddlewareExample()],
     ),
+    _i1.BasePage<dynamic>(
+      name: RouteNames.implementedPage,
+      page: () => _i8.BasePageImplementation(
+        someVariable: (Get.arguments?['someVariable'] as bool),
+        key: (Get.arguments?['key'] as _i4.Key?),
+      ),
+      fullscreenDialog: true,
+    ),
   ];
 
+  Future<void> goToImplementedPage({
+    required bool someVariable,
+    _i4.Key? key,
+  }) async =>
+      Get.toNamed<dynamic>(
+        RouteNames.implementedPage,
+        arguments: {'someVariable': someVariable, 'key': key},
+      );
   Future<_i2.SomeModel?> goToThirdPage({
     required _i2.SomeModel? previousValue,
     _i4.Key? key,
@@ -72,9 +89,11 @@ class GeneratedNavigator {
 }
 
 class RouteNames {
-  static const thirdPage = '/ThirdPage';
+  static const implementedPage = '/implemented-page';
 
-  static const firstPage = '/FirstPage';
+  static const thirdPage = '/third-page';
+
+  static const firstPage = '/first-page';
 
   static const customName = '/custom-name';
 }
