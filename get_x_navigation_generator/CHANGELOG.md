@@ -1,3 +1,9 @@
+## 0.0.8 (2023-01-30)
+
+- Added a `closeDialog` method to the generated navigator
+- Changed NavigationType.popAllAndPush to NavigationType.pushAndReplaceAll so it's more in line with the Flutter API
+- Changed NavigationType.pushAndReplaceAll and NavigationType.popAndPush to not be Future, unless a returnType is specified. This is to prevent the need to await the method call and keep viewmodels, or similar, in memory.
+
 ## 0.0.7 (2023-01-17)
 
 - Added generateMethod and generatePage options

@@ -84,7 +84,7 @@ const getXRoute = GetXRoute();
 /// The type of navigation to use
 enum NavigationType {
   /// Pop all previous routes and push the new route
-  popAllAndPush,
+  pushAndReplaceAll,
 
   /// Pop the current route and push the new route
   popAndPush,

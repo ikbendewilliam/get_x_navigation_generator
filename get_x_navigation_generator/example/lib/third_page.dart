@@ -6,6 +6,7 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
 @GetXRoute(
   returnType: SomeModel,
   returnTypeNullable: true,
+  navigationType: NavigationType.popAndPush,
 )
 class ThirdPage extends StatelessWidget {
   final SomeModel? previousValue;

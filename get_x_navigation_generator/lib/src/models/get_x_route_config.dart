@@ -29,7 +29,7 @@ class GetXRouteConfig {
 
   String get navigationTypeAsString {
     switch (navigationType) {
-      case NavigationType.popAllAndPush:
+      case NavigationType.pushAndReplaceAll:
         return 'offAllNamed';
       case NavigationType.popAndPush:
         return 'offNamed';

@@ -8,7 +8,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get_x_navigation_generator_annotations: ^0.0.5
+  get_x_navigation_generator_annotations: ^0.0.6
   # get_x_navigation_generator_annotations: # for local development
     # path: ../../get_x_navigation_generator_annotations
   get: ^4.6.5

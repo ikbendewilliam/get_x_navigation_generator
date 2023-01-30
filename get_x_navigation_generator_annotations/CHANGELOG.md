@@ -1,3 +1,7 @@
+## 0.0.6 (2023-01-30)
+
+- Changed NavigationType.popAllAndPush to NavigationType.pushAndReplaceAll so it's more in line with the Flutter API
+
 ## 0.0.5 (2023-01-17)
 
 - Added generateMethod and generatePage options

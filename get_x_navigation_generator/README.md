@@ -74,7 +74,7 @@ class RouteNames {
 - `routeName`: The name of the route. Default: `[className]` (converted to kebab-case, as [recommended by Google for urls](<https://developers.google.com/search/docs/crawling-indexing/url-structure#:~:text=Consider%20using%20hyphens%20to%20separate,(%20_%20)%20in%20your%20URLs.>))
 - `returnType`: The return type of the route. Default: `void` (Note: `?` is not valid, use `returnTypeNullable` instead)
 - `returnTypeNullable`: If the return type is nullable. Default: `false`
-- `navigationType`: The type of navigation. Default: `NavigationType.push`, valid options are: `popAllAndPush`, `popAndPush` and `push`
+- `navigationType`: The type of navigation. Default: `NavigationType.push`, valid options are: `pushAndReplaceAll`, `popAndPush` and `push`
 - `middlewares`: A list of middleware types to use for the route. Default: `[]`. **Note:** an annotation needs to be constant and middlewares are not, so you need to pass the type of the middleware
 - `generateMethod`: If a method should be generated for the route. Default: `true` (More info in separate method/page section below)
 - `generatePage`: If a page should be generated for the route. Default: `true` (More info in separate method/page section below)
@@ -138,4 +138,22 @@ class Help extends StatelessWidget {
   Widget build(BuildContext context) {
     return BaseHelp(appTitle: 'My app');
   }
+```
+
+## Custom annotations
+
+Rather than using the same middleware in the annotations, you can define your own annotations. For example:
+
+```dart
+const loginRoute = GetXRoute(
+  middlewares: [
+    AuthenticationGuard,
+    AnalyticsPermissionGuard,
+  ],
+);
+
+// in your widget:
+@loginRoute
+class LoginPage extends StatelessWidget {
+  ...
 ```

@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:get_x_navigation_generator/src/case_utils.dart';
+import 'package:get_x_navigation_generator/src/extensions/navigation_type_extension.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
 import 'package:get_x_navigation_generator/src/models/importable_type.dart';
 import 'package:get_x_navigation_generator/src/utils.dart';
@@ -119,25 +120,29 @@ class LibraryGenerator {
                   body = bodyCall.code;
                 }
                 return Method(
-                  (b) => b
-                    ..name = 'goTo${CaseUtil(route.routeName).upperCamelCase}'
-                    ..lambda = route.returnType == null
-                    ..modifier = MethodModifier.async
-                    ..optionalParameters
-                        .addAll(route.parameters.map((p) => Parameter(
-                              (b) => b
-                                ..name = p.argumentName
-                                ..named = true
-                                ..required = p.isRequired
-                                ..type = typeRefer(p, targetFile: targetFile),
-                            )))
-                    ..returns = typeRefer(
-                      route.returnType,
-                      targetFile: targetFile,
-                      forceNullable: true,
-                      forceFuture: true,
-                    )
-                    ..body = body,
+                  (b) {
+                    final isAsync = route.navigationType.isAsync ||
+                        route.returnType != null;
+                    b
+                      ..name = 'goTo${CaseUtil(route.routeName).upperCamelCase}'
+                      ..lambda = route.returnType == null
+                      ..modifier = isAsync ? MethodModifier.async : null
+                      ..optionalParameters
+                          .addAll(route.parameters.map((p) => Parameter(
+                                (b) => b
+                                  ..name = p.argumentName
+                                  ..named = true
+                                  ..required = p.isRequired
+                                  ..type = typeRefer(p, targetFile: targetFile),
+                              )))
+                      ..returns = typeRefer(
+                        route.returnType,
+                        targetFile: targetFile,
+                        forceNullable: true,
+                        forceFuture: isAsync,
+                      )
+                      ..body = body;
+                  },
                 );
               }))
               ..methods.add(Method(
@@ -154,6 +159,13 @@ class LibraryGenerator {
                   ..returns = const Reference('void')
                   ..body = const Reference('Get.back<T>')
                       .call([], {'result': const Reference('result')}).code,
+              ))
+              ..methods.add(Method(
+                (b) => b
+                  ..name = 'closeDialog'
+                  ..lambda = true
+                  ..returns = const Reference('void')
+                  ..body = const Reference('goBack<void>').call([]).code,
               ))
               ..methods.add(Method(
                 (b) => b

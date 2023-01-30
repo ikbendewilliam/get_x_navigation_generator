@@ -29,7 +29,7 @@ class GeneratedNavigator {
       name: RouteNames.firstPage,
       page: () => _i5.FirstPage(key: (Get.arguments?['key'] as _i4.Key?)),
     ),
-    _i1.BasePage<bool>(
+    _i1.BasePage<dynamic>(
       name: RouteNames.customName,
       page: () => _i6.SecondPage(
         title: (Get.arguments?['title'] as String),
@@ -60,7 +60,7 @@ class GeneratedNavigator {
     required _i2.SomeModel? previousValue,
     _i4.Key? key,
   }) async {
-    final dynamic result = await Get.toNamed<dynamic>(
+    final dynamic result = await Get.offNamed<dynamic>(
       RouteNames.thirdPage,
       arguments: {'previousValue': previousValue, 'key': key},
     );
@@ -71,19 +71,17 @@ class GeneratedNavigator {
         RouteNames.firstPage,
         arguments: {'key': key},
       );
-  Future<bool?> goToCustomName({
+  void goToCustomName({
     required String title,
     String? subTitle,
     _i4.Key? key,
-  }) async {
-    final dynamic result = await Get.offAllNamed<dynamic>(
-      RouteNames.customName,
-      arguments: {'title': title, 'subTitle': subTitle, 'key': key},
-    );
-    return (result as bool?);
-  }
-
+  }) =>
+      Get.offAllNamed<dynamic>(
+        RouteNames.customName,
+        arguments: {'title': title, 'subTitle': subTitle, 'key': key},
+      );
   void goBack<T>({T? result}) => Get.back<T>(result: result);
+  void closeDialog() => goBack<void>();
   Future<T?> showCustomDialog<T>({_i4.Widget? widget}) async =>
       Get.dialog<T>(widget ?? const _i4.SizedBox.shrink());
 }

@@ -6,8 +6,7 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
 
 @GetXRoute(
   routeName: 'custom-name',
-  returnType: bool,
-  navigationType: NavigationType.popAllAndPush,
+  navigationType: NavigationType.pushAndReplaceAll,
   middlewares: [
     MiddlewareExample,
   ],
