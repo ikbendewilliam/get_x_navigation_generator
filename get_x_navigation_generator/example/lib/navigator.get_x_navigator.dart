@@ -10,6 +10,7 @@ import 'package:get/route_manager.dart';
 
 import 'abstract_page_implementation.dart' as _i8;
 import 'base_page.dart' as _i1;
+import 'dialog.dart' as _i9;
 import 'main.dart' as _i5;
 import 'middleware_example.dart' as _i7;
 import 'second_page.dart' as _i6;
@@ -80,6 +81,17 @@ class GeneratedNavigator {
         RouteNames.customName,
         arguments: {'title': title, 'subTitle': subTitle, 'key': key},
       );
+  Future<bool?> showSomeDialog({
+    required String title,
+    required String? subTitle,
+    _i4.Key? key,
+  }) async =>
+      showCustomDialog<bool>(
+          widget: _i9.SomeDialog(
+        title: title,
+        subTitle: subTitle,
+        key: key,
+      ));
   void goBack<T>({T? result}) => Get.back<T>(result: result);
   void closeDialog() => goBack<void>();
   Future<T?> showCustomDialog<T>({_i4.Widget? widget}) async =>
@@ -89,9 +101,9 @@ class GeneratedNavigator {
 class RouteNames {
   static const implementedPage = '/implemented-page';
 
-  static const thirdPage = '/third-page';
+  static const thirdPage = '/third';
 
-  static const firstPage = '/first-page';
+  static const firstPage = '/first';
 
   static const customName = '/custom-name';
 }

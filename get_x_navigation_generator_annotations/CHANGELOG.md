@@ -1,3 +1,8 @@
+## 0.0.7 (2023-02-08)
+
+- Added NavigationType.dialog and getXDialog annotation
+- Added removeSuffixes to remove suffixes from the generated route name
+
 ## 0.0.6 (2023-01-30)
 
 - Changed NavigationType.popAllAndPush to NavigationType.pushAndReplaceAll so it's more in line with the Flutter API

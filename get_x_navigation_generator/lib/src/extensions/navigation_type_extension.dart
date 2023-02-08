@@ -4,6 +4,7 @@ extension NavigationTypeExtension on NavigationType? {
   bool get isAsync {
     switch (this) {
       case NavigationType.push:
+      case NavigationType.dialog:
       case null:
         return true;
       case NavigationType.popAndPush:

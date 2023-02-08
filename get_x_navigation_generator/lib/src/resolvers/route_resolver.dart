@@ -8,34 +8,27 @@ import 'package:source_gen/source_gen.dart';
 import 'importable_type_resolver.dart';
 
 const TypeChecker _getXRouteChecker = TypeChecker.fromRuntime(GetXRoute);
-const TypeChecker _constructorChecker =
-    TypeChecker.fromRuntime(GetXRouteConstructor);
+const TypeChecker _constructorChecker = TypeChecker.fromRuntime(GetXRouteConstructor);
 
 class RouteResolver {
   final ImportableTypeResolverImpl _typeResolver;
 
-  RouteResolver(List<LibraryElement> libs)
-      : _typeResolver = ImportableTypeResolverImpl(libs);
+  RouteResolver(List<LibraryElement> libs) : _typeResolver = ImportableTypeResolverImpl(libs);
 
   GetXRouteConfig resolve(ClassElement clazz) {
     final annotatedElement = clazz;
-    var getXRouteAnnotation = _getXRouteChecker.firstAnnotationOf(
+    final getXRouteAnnotation = _getXRouteChecker.firstAnnotationOf(
       annotatedElement,
       throwOnUnresolved: false,
     );
 
     final getXRoute = ConstantReader(getXRouteAnnotation);
-    final routeName = getXRoute.peek('routeName')?.stringValue ??
-        CaseUtil(clazz.name).kebabCase;
-    final returnType = getXRouteAnnotation?.getField('returnType');
-    final navigationType = NavigationType.values.firstWhereOrNull((element) =>
-        element.index ==
-        getXRoute.peek('navigationType')?.peek('index')?.intValue);
-    final returnTypeNullable =
-        getXRouteAnnotation?.getField('returnTypeNullable')?.toBoolValue() ??
-            false;
-    final middlewares =
-        getXRouteAnnotation?.getField('middlewares')?.toListValue() ?? [];
+    final routeNameValue = getXRoute.peek('routeName')?.stringValue;
+    final routeName = routeNameValue ?? CaseUtil(clazz.name).kebabCase;
+    final returnType = getXRoute.peek('returnType')?.typeValue;
+    final navigationType = NavigationType.values.firstWhereOrNull((element) => element.index == getXRoute.peek('navigationType')?.peek('index')?.intValue);
+    final returnTypeNullable = getXRoute.peek('returnTypeNullable')?.boolValue ?? false;
+    final middlewares = getXRoute.peek('middlewares')?.listValue ?? [];
 
     final possibleFactories = <ExecutableElement>[
       ...clazz.methods.where((m) => m.isStatic),
@@ -49,10 +42,10 @@ class RouteResolver {
 
     return GetXRouteConfig(
       type: _typeResolver.resolveType(annotatedElement.thisType),
-      returnType: returnType?.toTypeValue() == null
+      returnType: returnType == null
           ? null
           : _typeResolver.resolveType(
-              returnType!.toTypeValue()!,
+              returnType,
               forceNullable: returnTypeNullable,
             ),
       constructorName: constructor.name,
@@ -64,14 +57,12 @@ class RouteResolver {
               ))
           .toList(),
       routeName: routeName,
+      routeNameIsDefined: routeNameValue != null,
       navigationType: navigationType,
-      middlewares: middlewares
-          .map((e) => _typeResolver.resolveType(e.toTypeValue()!))
-          .toList(),
-      isFullscreenDialog:
-          getXRoute.peek('isFullscreenDialog')?.boolValue ?? false,
+      middlewares: middlewares.map((e) => _typeResolver.resolveType(e.toTypeValue()!)).toList(),
+      isFullscreenDialog: getXRoute.peek('isFullscreenDialog')?.boolValue ?? false,
       generateMethod: getXRoute.peek('generateMethod')?.boolValue ?? true,
-      generatePage: getXRoute.peek('generatePage')?.boolValue ?? true,
+      generatePage: (getXRoute.peek('generatePage')?.boolValue ?? true) && navigationType != NavigationType.dialog,
     );
   }
 }

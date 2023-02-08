@@ -36,6 +36,7 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   SomeModel? _result;
+  bool? _resultDialog;
 
   Future<void> _goToThirdPage() async {
     final result = await MainNavigator.instance.goToThirdPage(
@@ -77,16 +78,18 @@ class _FirstPageState extends State<FirstPage> {
             ),
             const SizedBox(height: 16),
             MaterialButton(
-              onPressed: () => MainNavigator.instance.showCustomDialog<void>(
-                widget: const AlertDialog(
-                  title: Text('Hello'),
-                  content: Text('World'),
-                ),
-              ),
-              child: const Text('Open a dialog'),
+              onPressed: () async {
+                _resultDialog = await MainNavigator.instance.showSomeDialog(
+                  title: 'Hello',
+                  subTitle: 'World',
+                );
+                setState(() {});
+              },
+              child: const Text('Open some dialog'),
             ),
             const SizedBox(height: 16),
             Text('Result: ${_result?.hello}'),
+            Text('Result dialog: $_resultDialog'),
             const Spacer(),
           ],
         ),

@@ -10,9 +10,14 @@ class GetXNavigator {
   /// arguments to the page. Must extend GetPage
   final Type? pageType;
 
+  /// Remove the suffixes from the class name in
+  /// the routename. Does not effect custom route names
+  final List<String> removeSuffixes;
+
   const GetXNavigator({
     this.navigatorClassName,
     this.pageType,
+    this.removeSuffixes = const ['Page', 'Screen', 'View', 'Widget'],
   });
 }
 
@@ -81,6 +86,30 @@ class GetXRoute {
 /// with default arguments
 const getXRoute = GetXRoute();
 
+/// Marks a class as a get X dialog
+/// A method will be generated
+/// Similar to [GetXRoute] with navigationType = NavigationType.dialog
+class GetXDialog extends GetXRoute {
+  const GetXDialog({
+    String? routeName,
+    Type? returnType,
+    bool returnTypeNullable = false,
+  }) : super(
+          routeName: routeName,
+          returnType: returnType,
+          returnTypeNullable: returnTypeNullable,
+          isFullscreenDialog: true,
+          middlewares: const [],
+          navigationType: NavigationType.dialog,
+          generatePage: false,
+          generateMethod: true,
+        );
+}
+
+/// const instance of [GetXDialog]
+/// with default arguments
+const getXDialog = GetXDialog();
+
 /// The type of navigation to use
 enum NavigationType {
   /// Pop all previous routes and push the new route
@@ -91,6 +120,9 @@ enum NavigationType {
 
   /// Push the new route
   push,
+
+  /// Create a dialog
+  dialog,
 }
 
 /// The constructor or static method to use to create a get X route

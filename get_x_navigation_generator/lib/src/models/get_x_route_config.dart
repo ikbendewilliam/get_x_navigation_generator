@@ -6,6 +6,7 @@ class GetXRouteConfig {
   final bool generateMethod;
   final bool generatePage;
   final bool isFullscreenDialog;
+  final bool routeNameIsDefined;
   final String routeName;
   final String constructorName;
   final ImportableType type;
@@ -17,6 +18,7 @@ class GetXRouteConfig {
   GetXRouteConfig({
     required this.type,
     required this.routeName,
+    required this.routeNameIsDefined,
     required this.returnType,
     required this.constructorName,
     required this.navigationType,
@@ -36,6 +38,8 @@ class GetXRouteConfig {
       case NavigationType.push:
       case null:
         return 'toNamed';
+      case NavigationType.dialog:
+        return 'dialog';
     }
   }
 
@@ -44,6 +48,7 @@ class GetXRouteConfig {
       'type': type.toMap(),
       'returnType': returnType?.toMap(),
       'routeName': routeName,
+      'routeNameIsDefined': routeNameIsDefined,
       'constructorName': constructorName,
       'navigationType': navigationType?.index,
       'parameters': parameters.map((x) => x.toMap()).toList(),
@@ -57,19 +62,13 @@ class GetXRouteConfig {
   factory GetXRouteConfig.fromMap(Map<String, dynamic> map) {
     return GetXRouteConfig(
       type: ImportableType.fromMap(map['type'] as Map<String, dynamic>),
-      returnType: map['returnType'] != null
-          ? ImportableType.fromMap(map['returnType'] as Map<String, dynamic>)
-          : null,
+      returnType: map['returnType'] != null ? ImportableType.fromMap(map['returnType'] as Map<String, dynamic>) : null,
       routeName: map['routeName'] as String? ?? '',
+      routeNameIsDefined: map['routeNameIsDefined'] as bool,
       constructorName: map['constructorName'] as String? ?? '',
-      navigationType: NavigationType.values
-          .firstWhereOrNull((e) => e.index == map['navigationType']),
-      parameters: List<ImportableType>.from(map['parameters']?.map(
-              (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
-          as Iterable),
-      middlewares: List<ImportableType>.from(map['middlewares']?.map(
-              (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
-          as Iterable),
+      navigationType: NavigationType.values.firstWhereOrNull((e) => e.index == map['navigationType']),
+      parameters: List<ImportableType>.from(map['parameters']?.map((dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>)) as Iterable),
+      middlewares: List<ImportableType>.from(map['middlewares']?.map((dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>)) as Iterable),
       isFullscreenDialog: map['isFullscreenDialog'] as bool,
       generateMethod: map['generateMethod'] as bool,
       generatePage: map['generatePage'] as bool,

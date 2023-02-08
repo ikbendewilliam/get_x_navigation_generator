@@ -1,3 +1,8 @@
+## 0.0.9 (2023-02-08)
+
+- Added NavigationType.dialog and getXDialog annotation
+- Added support for suffixes, this removes `screen`, `page` and `view` from the route name (or any suffix you specify)
+
 ## 0.0.8 (2023-01-30)
 
 - Added a `closeDialog` method to the generated navigator

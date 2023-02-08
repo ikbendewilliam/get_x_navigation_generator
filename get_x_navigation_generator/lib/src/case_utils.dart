@@ -5,8 +5,12 @@ class CaseUtil {
   late String originalText;
   late List<String> _words;
 
-  CaseUtil(String text) {
-    // ignore: prefer_initializing_formals
+  CaseUtil(String text, {List<String> removeSuffixes = const []}) {
+    for (final removeSuffix in removeSuffixes) {
+      if (text.toLowerCase().endsWith(removeSuffix.toLowerCase())) {
+        text = text.substring(0, text.length - removeSuffix.length);
+      }
+    }
     originalText = text;
     _words = _groupIntoWords(text);
   }
@@ -18,9 +22,7 @@ class CaseUtil {
 
     for (var i = 0; i < text.length; i++) {
       final char = String.fromCharCode(text.codeUnitAt(i));
-      final nextChar = i + 1 == text.length
-          ? null
-          : String.fromCharCode(text.codeUnitAt(i + 1));
+      final nextChar = i + 1 == text.length ? null : String.fromCharCode(text.codeUnitAt(i + 1));
 
       if (_symbolRegex.hasMatch(char)) {
         continue;
@@ -28,9 +30,7 @@ class CaseUtil {
 
       sb.write(char);
 
-      final isEndOfWord = nextChar == null ||
-          (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) ||
-          _symbolRegex.hasMatch(nextChar);
+      final isEndOfWord = nextChar == null || (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) || _symbolRegex.hasMatch(nextChar);
 
       if (isEndOfWord) {
         words.add(sb.toString());
@@ -47,10 +47,11 @@ class CaseUtil {
 
   String get camelCase => _getCamelCase();
 
+  String get textWithoutSuffix => _getTextWithoutSuffix();
+
   String get upperCamelCase => _uppserCamelCase();
 
-  String _getSnakeCase({String separator = '_'}) =>
-      _words.map((word) => word.toLowerCase()).toList().join(separator);
+  String _getSnakeCase({String separator = '_'}) => _words.map((word) => word.toLowerCase()).toList().join(separator);
 
   String _getCamelCase({String separator = ''}) {
     final words = _words.map(_upperCaseFirstLetter).toList();
@@ -62,6 +63,15 @@ class CaseUtil {
   String _uppserCamelCase({String separator = ''}) {
     final words = _words.map(_upperCaseFirstLetter).toList();
     return words.join(separator);
+  }
+
+  String _getTextWithoutSuffix() {
+    final delimiters = [' ', '-', '_', '.', '/'];
+    if (delimiters.any(originalText.endsWith)) {
+      return originalText.substring(0, originalText.length - 1);
+    } else {
+      return originalText;
+    }
   }
 
   static String _upperCaseFirstLetter(String word) {
