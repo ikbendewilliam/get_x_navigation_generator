@@ -11,17 +11,29 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
 import 'package:glob/glob.dart';
 import 'package:source_gen/source_gen.dart';
 
-class GetXNavigationConfigGenerator extends GeneratorForAnnotation<GetXNavigator> {
+class GetXNavigationConfigGenerator
+    extends GeneratorForAnnotation<GetXNavigator> {
   static const _navigatorClassNameDefault = 'BaseNavigator';
 
   @override
-  dynamic generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) async {
-    final typeResolver = ImportableTypeResolverImpl(await buildStep.resolver.libraries.toList());
+  dynamic generateForAnnotatedElement(
+      Element element, ConstantReader annotation, BuildStep buildStep) async {
+    final typeResolver =
+        ImportableTypeResolverImpl(await buildStep.resolver.libraries.toList());
     final configFiles = Glob("**.get_x_navigation.json");
-    final navigatorClassName = annotation.peek('navigatorClassName')?.stringValue;
+    final navigatorClassName =
+        annotation.peek('navigatorClassName')?.stringValue;
     final pageTypeAsDartType = annotation.peek('pageType')?.typeValue;
-    final removeSuffixes = annotation.peek('removeSuffixes')?.listValue.map((e) => e.toStringValue()).whereType<String>().toList() ?? [];
-    final pageType = pageTypeAsDartType == null ? null : typeResolver.resolveType(pageTypeAsDartType);
+    final removeSuffixes = annotation
+            .peek('removeSuffixes')
+            ?.listValue
+            .map((e) => e.toStringValue())
+            .whereType<String>()
+            .toList() ??
+        [];
+    final pageType = pageTypeAsDartType == null
+        ? null
+        : typeResolver.resolveType(pageTypeAsDartType);
     final jsonData = <Map>[];
 
     await for (final id in buildStep.findAssets(configFiles)) {

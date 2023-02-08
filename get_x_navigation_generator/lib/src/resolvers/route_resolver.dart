@@ -8,12 +8,14 @@ import 'package:source_gen/source_gen.dart';
 import 'importable_type_resolver.dart';
 
 const TypeChecker _getXRouteChecker = TypeChecker.fromRuntime(GetXRoute);
-const TypeChecker _constructorChecker = TypeChecker.fromRuntime(GetXRouteConstructor);
+const TypeChecker _constructorChecker =
+    TypeChecker.fromRuntime(GetXRouteConstructor);
 
 class RouteResolver {
   final ImportableTypeResolverImpl _typeResolver;
 
-  RouteResolver(List<LibraryElement> libs) : _typeResolver = ImportableTypeResolverImpl(libs);
+  RouteResolver(List<LibraryElement> libs)
+      : _typeResolver = ImportableTypeResolverImpl(libs);
 
   GetXRouteConfig resolve(ClassElement clazz) {
     final annotatedElement = clazz;
@@ -26,8 +28,11 @@ class RouteResolver {
     final routeNameValue = getXRoute.peek('routeName')?.stringValue;
     final routeName = routeNameValue ?? CaseUtil(clazz.name).kebabCase;
     final returnType = getXRoute.peek('returnType')?.typeValue;
-    final navigationType = NavigationType.values.firstWhereOrNull((element) => element.index == getXRoute.peek('navigationType')?.peek('index')?.intValue);
-    final returnTypeNullable = getXRoute.peek('returnTypeNullable')?.boolValue ?? false;
+    final navigationType = NavigationType.values.firstWhereOrNull((element) =>
+        element.index ==
+        getXRoute.peek('navigationType')?.peek('index')?.intValue);
+    final returnTypeNullable =
+        getXRoute.peek('returnTypeNullable')?.boolValue ?? false;
     final middlewares = getXRoute.peek('middlewares')?.listValue ?? [];
 
     final possibleFactories = <ExecutableElement>[
@@ -59,10 +64,14 @@ class RouteResolver {
       routeName: routeName,
       routeNameIsDefined: routeNameValue != null,
       navigationType: navigationType,
-      middlewares: middlewares.map((e) => _typeResolver.resolveType(e.toTypeValue()!)).toList(),
-      isFullscreenDialog: getXRoute.peek('isFullscreenDialog')?.boolValue ?? false,
+      middlewares: middlewares
+          .map((e) => _typeResolver.resolveType(e.toTypeValue()!))
+          .toList(),
+      isFullscreenDialog:
+          getXRoute.peek('isFullscreenDialog')?.boolValue ?? false,
       generateMethod: getXRoute.peek('generateMethod')?.boolValue ?? true,
-      generatePage: (getXRoute.peek('generatePage')?.boolValue ?? true) && navigationType != NavigationType.dialog,
+      generatePage: (getXRoute.peek('generatePage')?.boolValue ?? true) &&
+          navigationType != NavigationType.dialog,
     );
   }
 }
