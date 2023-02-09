@@ -18,10 +18,11 @@ class SomeDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const Spacer(),
             Text('Title: $title'),
             const SizedBox(height: 4),
             Text('SubTitle: $subTitle'),
