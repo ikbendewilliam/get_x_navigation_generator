@@ -11,6 +11,7 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
     MiddlewareExample,
   ],
 )
+@getXRoute // Generate two routes: /second-page and /custom-name
 class SecondPage extends StatelessWidget {
   final String title;
   final String? subTitle;

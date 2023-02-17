@@ -1,3 +1,7 @@
+## 0.0.10 (2023-02-17)
+
+- Added support for multiple annotations on the same class so you can generate multiple methods for a single page (use routeName to specify the name of the method and route)
+
 ## 0.0.9 (2023-02-08)
 
 - Added NavigationType.dialog and getXDialog annotation

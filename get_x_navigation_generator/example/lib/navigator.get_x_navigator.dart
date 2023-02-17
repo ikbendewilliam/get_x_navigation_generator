@@ -40,6 +40,14 @@ class GeneratedNavigator {
       middlewares: [_i7.MiddlewareExample()],
     ),
     _i1.BasePage<dynamic>(
+      name: RouteNames.secondPage,
+      page: () => _i6.SecondPage(
+        title: (Get.arguments?['title'] as String),
+        subTitle: (Get.arguments?['subTitle'] as String?),
+        key: (Get.arguments?['key'] as _i4.Key?),
+      ),
+    ),
+    _i1.BasePage<dynamic>(
       name: RouteNames.implementedPage,
       page: () => _i8.BasePageImplementation(
         someVariable: (Get.arguments?['someVariable'] as bool),
@@ -81,6 +89,15 @@ class GeneratedNavigator {
         RouteNames.customName,
         arguments: {'title': title, 'subTitle': subTitle, 'key': key},
       );
+  Future<void> goToSecondPage({
+    required String title,
+    String? subTitle,
+    _i4.Key? key,
+  }) async =>
+      Get.toNamed<dynamic>(
+        RouteNames.secondPage,
+        arguments: {'title': title, 'subTitle': subTitle, 'key': key},
+      );
   Future<bool?> showSomeDialog({
     required String title,
     required String? subTitle,
@@ -106,4 +123,6 @@ class RouteNames {
   static const firstPage = '/first';
 
   static const customName = '/custom-name';
+
+  static const secondPage = '/second';
 }
