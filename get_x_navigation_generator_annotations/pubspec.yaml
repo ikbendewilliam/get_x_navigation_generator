@@ -5,7 +5,7 @@ homepage: https://github.com/ikbendewilliam/get_x_navigation_generator
 
 environment:
   sdk: '>=2.18.0 <3.0.0'
-  flutter: ">=1.17.0"
+  flutter: '>=2.0.0'
 
 dependencies:
   get: ^4.0.0

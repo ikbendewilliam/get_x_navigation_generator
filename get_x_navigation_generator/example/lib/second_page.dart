@@ -2,6 +2,7 @@ import 'package:example/middleware_example.dart';
 import 'package:example/navigator.dart';
 import 'package:example/some_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 
 @GetXRoute(
@@ -10,6 +11,16 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
   middlewares: [
     MiddlewareExample,
   ],
+  transition: Transition.zoom,
+  curve: Curves.linear,
+  transitionDuration: Duration(seconds: 1),
+  participatesInRootNavigator: true,
+  title: 'Second Page',
+  maintainState: false,
+  alignment: Alignment.center,
+  opaque: false,
+  popGesture: true,
+  showCupertinoParallax: true,
 )
 @getXRoute // Generate two routes: /second-page and /custom-name
 class SecondPage extends StatelessWidget {

@@ -37,8 +37,7 @@ class LibraryGenerator {
             ..symbol = 'GlobalKey'
             ..url = 'package:flutter/material.dart'
             ..isNullable = true
-            ..types.add(const Reference(
-                'NavigatorState', 'package:flutter/material.dart')),
+            ..types.add(const Reference('NavigatorState', 'package:flutter/material.dart')),
         ),
     );
     return Library(
@@ -59,75 +58,56 @@ class LibraryGenerator {
                           .where((route) => route.generatePage)
                           .map((route) => TypeReference(
                                 (b) {
-                                  final pageTypeRef = pageType == null
-                                      ? null
-                                      : typeRefer(pageType!,
-                                          targetFile: targetFile);
+                                  final pageTypeRef = pageType == null ? null : typeRefer(pageType!, targetFile: targetFile);
                                   b
                                     ..symbol = pageTypeRef?.symbol ?? 'GetPage'
                                     ..url = pageTypeRef?.url
-                                    ..types.add(route.returnType != null
-                                        ? typeRefer(route.returnType!,
-                                            targetFile: targetFile)
-                                        : const Reference('dynamic'));
+                                    ..types.add(route.returnType != null ? typeRefer(route.returnType!, targetFile: targetFile) : const Reference('dynamic'));
                                 },
                               ).call([], {
-                                'name': Reference(
-                                    'RouteNames.${CaseUtil(route.routeName).camelCase}'),
+                                'name': Reference('RouteNames.${CaseUtil(route.routeName).camelCase}'),
                                 'page': Method(
                                   (b) => b
                                     ..name = ''
                                     ..body = Reference(
-                                      route.constructorName ==
-                                                  route.type.className ||
-                                              route.constructorName.isEmpty
+                                      route.constructorName == route.type.className || route.constructorName.isEmpty
                                           ? route.type.className
                                           : '${route.type.className}.${route.constructorName}',
-                                      typeRefer(route.type,
-                                              targetFile: targetFile)
-                                          .url,
+                                      typeRefer(route.type, targetFile: targetFile).url,
                                     ).call(
                                         [],
-                                        route.parameters.asMap().map((_, p) =>
-                                            MapEntry(
-                                                p.argumentName,
-                                                Reference(
-                                                        "Get.arguments?['${p.argumentName}']")
-                                                    .asA(typeRefer(
-                                                        p,
-                                                        targetFile:
-                                                            targetFile))))).code,
+                                        route.parameters.asMap().map(
+                                            (_, p) => MapEntry(p.argumentName, Reference("Get.arguments?['${p.argumentName}']").asA(typeRefer(p, targetFile: targetFile))))).code,
                                 ).closure,
                                 if (route.middlewares.isNotEmpty)
-                                  'middlewares': literalList(route.middlewares
-                                      .map((middleware) => typeRefer(middleware,
-                                              targetFile: targetFile)
-                                          .call([]))
-                                      .toList()),
-                                if (route.isFullscreenDialog)
-                                  'fullscreenDialog': literalBool(true),
+                                  'middlewares': literalList(route.middlewares.map((middleware) => typeRefer(middleware, targetFile: targetFile).call([])).toList()),
+                                if (route.isFullscreenDialog) 'fullscreenDialog': literalBool(true),
+                                if (route.transition != null) 'transition': Reference(route.transition!.toString(), 'package:get/route_manager.dart'),
+                                if (route.transitionDuration != null) ...{
+                                  'transitionDuration': const Reference('Duration').call([], {'milliseconds': literalNum(route.transitionDuration!.inMilliseconds)}),
+                                },
+                                if (route.participatesInRootNavigator != null) 'participatesInRootNavigator': literalBool(route.participatesInRootNavigator!),
+                                if (route.title != null) 'title': literalString(route.title!),
+                                'maintainState': literalBool(route.maintainState),
+                                'opaque': literalBool(route.opaque),
+                                'showCupertinoParallax': literalBool(route.showCupertinoParallax),
+                                if (route.popGesture != null) 'popGesture': literalBool(route.popGesture!),
                               }))
                           .toList())
                       .code,
               ))
-              ..methods.addAll(routes
-                  .where((route) =>
-                      route.generateMethod &&
-                      route.navigationType != NavigationType.dialog)
-                  .map((route) {
+              ..methods.addAll(routes.where((route) => route.generateMethod && route.navigationType != NavigationType.dialog).map((route) {
                 final bodyCall = TypeReference(
                   (b) => b
                     ..symbol = 'Get.${route.navigationTypeAsString}'
                     ..types.add(const Reference('dynamic')),
                 ).call(
                   [
-                    Reference(
-                        'RouteNames.${CaseUtil(route.routeName).camelCase}'),
+                    Reference('RouteNames.${CaseUtil(route.routeName).camelCase}'),
                   ],
                   {
                     'id': const Reference('navigatorId'),
-                    'arguments': Reference(
-                        '${route.parameters.asMap().map((_, p) => MapEntry("'${p.argumentName}'", p.argumentName))}'),
+                    'arguments': Reference('${route.parameters.asMap().map((_, p) => MapEntry("'${p.argumentName}'", p.argumentName))}'),
                     if (route.navigationType == NavigationType.push) ...{
                       'preventDuplicates': literalBool(route.preventDuplicates),
                     },
@@ -136,34 +116,25 @@ class LibraryGenerator {
                 Code body;
                 if (route.returnType != null) {
                   body = Block((b) => b
-                    ..statements.add(
-                        declareFinal('result', type: const Reference('dynamic'))
-                            .assign(bodyCall.awaited)
-                            .statement)
-                    ..statements.add(const Reference('result')
-                        .asA(typeRefer(route.returnType,
-                            targetFile: targetFile, forceNullable: true))
-                        .returned
-                        .statement));
+                    ..statements.add(declareFinal('result', type: const Reference('dynamic')).assign(bodyCall.awaited).statement)
+                    ..statements.add(const Reference('result').asA(typeRefer(route.returnType, targetFile: targetFile, forceNullable: true)).returned.statement));
                 } else {
                   body = bodyCall.code;
                 }
                 return Method(
                   (b) {
-                    final isAsync = route.navigationType.isAsync ||
-                        route.returnType != null;
+                    final isAsync = route.navigationType.isAsync || route.returnType != null;
                     b
                       ..name = 'goTo${CaseUtil(route.routeName).upperCamelCase}'
                       ..lambda = route.returnType == null
                       ..modifier = isAsync ? MethodModifier.async : null
-                      ..optionalParameters
-                          .addAll(route.parameters.map((p) => Parameter(
-                                (b) => b
-                                  ..name = p.argumentName
-                                  ..named = true
-                                  ..required = p.isRequired
-                                  ..type = typeRefer(p, targetFile: targetFile),
-                              )))
+                      ..optionalParameters.addAll(route.parameters.map((p) => Parameter(
+                            (b) => b
+                              ..name = p.argumentName
+                              ..named = true
+                              ..required = p.isRequired
+                              ..type = typeRefer(p, targetFile: targetFile),
+                          )))
                       ..optionalParameters.add(navigatorIdParameter)
                       ..returns = typeRefer(
                         route.returnType,
@@ -175,29 +146,17 @@ class LibraryGenerator {
                   },
                 );
               }))
-              ..methods.addAll(routes
-                  .where(
-                      (route) => route.navigationType == NavigationType.dialog)
-                  .map((route) {
+              ..methods.addAll(routes.where((route) => route.navigationType == NavigationType.dialog).map((route) {
                 final body = TypeReference((b) => b
                   ..symbol = 'showCustomDialog'
-                  ..types.add(route.returnType == null
-                      ? const Reference('dynamic')
-                      : typeRefer(route.returnType!,
-                          targetFile: targetFile))).call(
+                  ..types.add(route.returnType == null ? const Reference('dynamic') : typeRefer(route.returnType!, targetFile: targetFile))).call(
                   [],
                   {
                     'navigatorKey': const Reference('navigatorKey'),
                     'widget': Reference(
-                      route.constructorName == route.type.className ||
-                              route.constructorName.isEmpty
-                          ? route.type.className
-                          : '${route.type.className}.${route.constructorName}',
+                      route.constructorName == route.type.className || route.constructorName.isEmpty ? route.type.className : '${route.type.className}.${route.constructorName}',
                       typeRefer(route.type, targetFile: targetFile).url,
-                    ).call(
-                        [],
-                        route.parameters.asMap().map((_, p) => MapEntry(
-                            p.argumentName, Reference(p.argumentName)))),
+                    ).call([], route.parameters.asMap().map((_, p) => MapEntry(p.argumentName, Reference(p.argumentName)))),
                   },
                 ).code;
                 return Method(
@@ -206,14 +165,13 @@ class LibraryGenerator {
                       ..name = 'show${CaseUtil(route.routeName).upperCamelCase}'
                       ..lambda = true
                       ..modifier = MethodModifier.async
-                      ..optionalParameters
-                          .addAll(route.parameters.map((p) => Parameter(
-                                (b) => b
-                                  ..name = p.argumentName
-                                  ..named = true
-                                  ..required = p.isRequired
-                                  ..type = typeRefer(p, targetFile: targetFile),
-                              )))
+                      ..optionalParameters.addAll(route.parameters.map((p) => Parameter(
+                            (b) => b
+                              ..name = p.argumentName
+                              ..named = true
+                              ..required = p.isRequired
+                              ..type = typeRefer(p, targetFile: targetFile),
+                          )))
                       ..optionalParameters.add(navigatorKeyParameter)
                       ..returns = typeRefer(
                         route.returnType,
@@ -262,9 +220,7 @@ class LibraryGenerator {
                       ..name = 'predicate'
                       ..type = FunctionType((b) => b
                         ..returnType = const Reference('bool')
-                        ..requiredParameters.add(const Reference(
-                            'Route<dynamic>',
-                            'package:flutter/material.dart'))),
+                        ..requiredParameters.add(const Reference('Route<dynamic>', 'package:flutter/material.dart'))),
                   ))
                   ..optionalParameters.add(navigatorIdParameter)
                   ..returns = const Reference('void')
@@ -299,25 +255,20 @@ class LibraryGenerator {
                     (b) => b
                       ..name = 'widget'
                       ..named = true
-                      ..type = const Reference(
-                          'Widget?', 'package:flutter/material.dart'),
+                      ..type = const Reference('Widget?', 'package:flutter/material.dart'),
                   ))
                   ..optionalParameters.add(navigatorKeyParameter)
                   ..returns = const Reference('Future<T?>')
                   ..body = const Reference('Get.dialog<T>').call([
-                    const Reference('widget').ifNullThen(const Reference(
-                            'SizedBox.shrink', 'package:flutter/material.dart')
-                        .constInstance([]))
+                    const Reference('widget').ifNullThen(const Reference('SizedBox.shrink', 'package:flutter/material.dart').constInstance([]))
                   ], {
                     'navigatorKey': const Reference('navigatorKey'),
                   }).code,
               ))),
             Class(
               (b) {
-                final pageRoutes = routes.where(
-                    (route) => route.navigationType != NavigationType.dialog);
-                final routesMap = pageRoutes.toList().asMap().map((_, value) =>
-                    MapEntry(value.routeName, value.routeNameIsDefined));
+                final pageRoutes = routes.where((route) => route.navigationType != NavigationType.dialog);
+                final routesMap = pageRoutes.toList().asMap().map((_, value) => MapEntry(value.routeName, value.routeNameIsDefined));
                 b
                   ..name = 'RouteNames'
                   ..fields.addAll(routesMap.entries.map((entry) {
@@ -326,8 +277,8 @@ class LibraryGenerator {
                         ..name = CaseUtil(entry.key).camelCase
                         ..static = true
                         ..modifier = FieldModifier.constant
-                        ..assignment = Code(
-                            "'${entry.key.startsWith('/') ? '' : '/'}${entry.value ? entry.key : CaseUtil(entry.key, removeSuffixes: removeSuffixes).textWithoutSuffix}'"),
+                        ..assignment =
+                            Code("'${entry.key.startsWith('/') ? '' : '/'}${entry.value ? entry.key : CaseUtil(entry.key, removeSuffixes: removeSuffixes).textWithoutSuffix}'"),
                     );
                   }));
               },
