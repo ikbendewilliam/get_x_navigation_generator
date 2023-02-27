@@ -7,6 +7,7 @@
 - Generates a navigator class with all the routes
 - Generates a class with all the route names
 - Generates a method to go to each route (customizable navigation method) with arguments
+- Generates a method to show dialogs
 - Generates a method to go back and show a dialog
 
 ## Getting Started
@@ -68,19 +69,24 @@ class RouteNames {
 
 - `name`: The name of the navigator class. Default: `BaseNavigator`
 - `pageType`: The type of the generated pages, must extend GetPage. Default: `GetPage`
+- `removeSuffixes`: A list of suffixes to remove from the route name. Default: `['Page', 'Screen', 'View', 'Widget']`
 
 ### GetXRoute
 
 - `routeName`: The name of the route. Default: `[className]` (converted to kebab-case, as [recommended by Google for urls](<https://developers.google.com/search/docs/crawling-indexing/url-structure#:~:text=Consider%20using%20hyphens%20to%20separate,(%20_%20)%20in%20your%20URLs.>))
 - `returnType`: The return type of the route. Default: `void` (Note: `?` is not valid, use `returnTypeNullable` instead)
 - `returnTypeNullable`: If the return type is nullable. Default: `false`
-- `navigationType`: The type of navigation. Default: `NavigationType.push`, valid options are: `pushAndReplaceAll`, `popAndPush` and `push`
+- `navigationType`: The type of navigation. Default: `NavigationType.push`, valid options are: `pushAndReplaceAll`, `popAndPush` and `push` and `dialog` to specify a dialog
 - `middlewares`: A list of middleware types to use for the route. Default: `[]`. **Note:** an annotation needs to be constant and middlewares are not, so you need to pass the type of the middleware
 - `generateMethod`: If a method should be generated for the route. Default: `true` (More info in separate method/page section below)
 - `generatePage`: If a page should be generated for the route. Default: `true` (More info in separate method/page section below)
 - `isFullscreenDialog`: If the route should be launched fullscreen. Default: `false`
 
 - `@getXRouteConstructor`: The constructor to use for the route. Defaults to unnamed constructor. This can be any constructor or static method
+
+### GetXDialog
+
+- `returnType`, `returnTypeNullable`, `routeName`, `isFullscreenDialog`: Same as `GetXRoute` (note: routeName is only used for the method name)
 
 ```dart
 @GetXRoute(
@@ -140,20 +146,31 @@ class Help extends StatelessWidget {
   }
 ```
 
-## Custom annotations
+## Nested navigators
 
-Rather than using the same middleware in the annotations, you can define your own annotations. For example:
+This package supports nested navigators. To use them, you need to specify a `id` for the navigator and use the `navigatorId` argument in the methods.
 
 ```dart
-const loginRoute = GetXRoute(
-  middlewares: [
-    AuthenticationGuard,
-    AnalyticsPermissionGuard,
-  ],
+Navigator(
+  key: Get.nestedKey(widget.id),
+  onGenerateRoute: (settings) {
+    final page = MainNavigator.pages.firstWhere((element) => element.name == settings.name);
+    return GetPageRoute<dynamic>(
+      page: page.page,
+      settings: settings,
+      binding: page.binding,
+      transition: page.transition,
+      opaque: page.opaque,
+      popGesture: page.popGesture,
+      fullscreenDialog: page.fullscreenDialog,
+      maintainState: page.maintainState,
+      curve: page.curve,
+      middlewares: page.middlewares,
+    );
+  },
 );
 
-// in your widget:
-@loginRoute
-class LoginPage extends StatelessWidget {
-  ...
+...
+
+_navigator.goToPageWithinNestedNavigation(navigatorId: widget.id);
 ```

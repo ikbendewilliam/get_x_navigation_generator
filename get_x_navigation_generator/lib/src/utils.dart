@@ -68,8 +68,7 @@ Reference typeRefer(
         : ImportableTypeResolver.relative(type.import, targetFile);
     typeReference = TypeReference((reference) {
       reference
-        ..symbol =
-            '${type.className}${withNullabilitySuffix && (forceNullable || type.isNullable) && !type.className.endsWith('?') ? '?' : ''}'
+        ..symbol = type.className
         ..url = relativeImport
         ..isNullable =
             withNullabilitySuffix && (forceNullable || type.isNullable);

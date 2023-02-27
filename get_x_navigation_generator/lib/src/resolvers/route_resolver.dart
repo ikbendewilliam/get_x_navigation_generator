@@ -29,6 +29,8 @@ class RouteResolver {
       final navigationType = NavigationType.values.firstWhereOrNull((element) =>
           element.index ==
           getXRoute.peek('navigationType')?.peek('index')?.intValue);
+      final preventDuplicates =
+          getXRoute.peek('preventDuplicates')?.boolValue ?? true;
       final returnTypeNullable =
           getXRoute.peek('returnTypeNullable')?.boolValue ?? false;
       final middlewares = getXRoute.peek('middlewares')?.listValue ?? [];
@@ -51,6 +53,7 @@ class RouteResolver {
                 returnType,
                 forceNullable: returnTypeNullable,
               ),
+        preventDuplicates: preventDuplicates,
         constructorName: constructor.name,
         parameters: constructor.parameters
             .map((p) => _typeResolver.resolveType(

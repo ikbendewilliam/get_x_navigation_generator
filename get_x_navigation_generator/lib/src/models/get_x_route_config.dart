@@ -7,6 +7,7 @@ class GetXRouteConfig {
   final bool generatePage;
   final bool isFullscreenDialog;
   final bool routeNameIsDefined;
+  final bool preventDuplicates;
   final String routeName;
   final String constructorName;
   final ImportableType type;
@@ -19,6 +20,7 @@ class GetXRouteConfig {
     required this.type,
     required this.routeName,
     required this.routeNameIsDefined,
+    required this.preventDuplicates,
     required this.returnType,
     required this.constructorName,
     required this.navigationType,
@@ -49,6 +51,7 @@ class GetXRouteConfig {
       'returnType': returnType?.toMap(),
       'routeName': routeName,
       'routeNameIsDefined': routeNameIsDefined,
+      'preventDuplicates': preventDuplicates,
       'constructorName': constructorName,
       'navigationType': navigationType?.index,
       'parameters': parameters.map((x) => x.toMap()).toList(),
@@ -67,6 +70,7 @@ class GetXRouteConfig {
           : null,
       routeName: map['routeName'] as String? ?? '',
       routeNameIsDefined: map['routeNameIsDefined'] as bool,
+      preventDuplicates: map['preventDuplicates'] as bool,
       constructorName: map['constructorName'] as String? ?? '',
       navigationType: NavigationType.values
           .firstWhereOrNull((e) => e.index == map['navigationType']),
