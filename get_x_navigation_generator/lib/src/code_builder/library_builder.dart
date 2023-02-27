@@ -223,6 +223,35 @@ class LibraryGenerator {
               ))
               ..methods.add(Method(
                 (b) => b
+                  ..name = 'popUntil'
+                  ..lambda = true
+                  ..requiredParameters.add(Parameter(
+                    (b) => b
+                      ..name = 'predicate'
+                      ..type = FunctionType((b) => b
+                        ..returnType = const Reference('bool')
+                        ..requiredParameters.add(const Reference(
+                            'Route<dynamic>',
+                            'package:flutter/material.dart'))),
+                  ))
+                  ..returns = const Reference('void')
+                  ..body = const Reference('Get.until')
+                      .call([const Reference('predicate')]).code,
+              ))
+              ..methods.add(Method(
+                (b) => b
+                  ..name = 'goBackTo'
+                  ..lambda = true
+                  ..requiredParameters.add(Parameter((b) => b
+                    ..name = 'routeName'
+                    ..type = const Reference('String')))
+                  ..returns = const Reference('void')
+                  ..body = const Reference('Get.until').call([
+                    const Reference('(route) => Get.currentRoute == routeName')
+                  ]).code,
+              ))
+              ..methods.add(Method(
+                (b) => b
                   ..name = 'showCustomDialog'
                   ..lambda = true
                   ..modifier = MethodModifier.async
