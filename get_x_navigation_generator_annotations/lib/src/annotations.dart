@@ -37,6 +37,10 @@ class GetXRoute {
   /// Set if the type returned by the goTo method is nullable
   final bool returnTypeNullable;
 
+  /// Set if we allow duplicates of this route. Note that nested
+  /// routes are also considered duplicates.
+  final bool preventDuplicates;
+
   /// The type of navigation to use
   final NavigationType navigationType;
 
@@ -79,6 +83,7 @@ class GetXRoute {
     this.isFullscreenDialog = false,
     this.generatePage = true,
     this.generateMethod = true,
+    this.preventDuplicates = false,
   });
 }
 

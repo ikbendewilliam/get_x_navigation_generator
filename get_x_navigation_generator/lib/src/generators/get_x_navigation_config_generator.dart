@@ -59,6 +59,7 @@ class GetXNavigationConfigGenerator
     final emitter = DartEmitter(
       allocator: Allocator.simplePrefixing(),
       orderDirectives: true,
+      useNullSafetySyntax: true,
     );
 
     return DartFormatter().format(generatedLib.accept(emitter).toString());

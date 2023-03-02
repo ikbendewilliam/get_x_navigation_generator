@@ -22,6 +22,25 @@ class LibraryGenerator {
   });
 
   Library generate() {
+    final navigatorIdParameter = Parameter(
+      (b) => b
+        ..name = 'navigatorId'
+        ..named = true
+        ..type = const Reference('int?'),
+    );
+    final navigatorKeyParameter = Parameter(
+      (b) => b
+        ..name = 'navigatorKey'
+        ..named = true
+        ..type = TypeReference(
+          (b) => b
+            ..symbol = 'GlobalKey'
+            ..url = 'package:flutter/material.dart'
+            ..isNullable = true
+            ..types.add(const Reference(
+                'NavigatorState', 'package:flutter/material.dart')),
+        ),
+    );
     return Library(
       (b) => b
         ..directives.addAll([
@@ -106,8 +125,12 @@ class LibraryGenerator {
                         'RouteNames.${CaseUtil(route.routeName).camelCase}'),
                   ],
                   {
+                    'id': const Reference('navigatorId'),
                     'arguments': Reference(
-                        '${route.parameters.asMap().map((_, p) => MapEntry("'${p.argumentName}'", p.argumentName))}')
+                        '${route.parameters.asMap().map((_, p) => MapEntry("'${p.argumentName}'", p.argumentName))}'),
+                    if (route.navigationType == NavigationType.push) ...{
+                      'preventDuplicates': literalBool(route.preventDuplicates),
+                    },
                   },
                 );
                 Code body;
@@ -141,6 +164,7 @@ class LibraryGenerator {
                                   ..required = p.isRequired
                                   ..type = typeRefer(p, targetFile: targetFile),
                               )))
+                      ..optionalParameters.add(navigatorIdParameter)
                       ..returns = typeRefer(
                         route.returnType,
                         targetFile: targetFile,
@@ -163,6 +187,7 @@ class LibraryGenerator {
                           targetFile: targetFile))).call(
                   [],
                   {
+                    'navigatorKey': const Reference('navigatorKey'),
                     'widget': Reference(
                       route.constructorName == route.type.className ||
                               route.constructorName.isEmpty
@@ -189,6 +214,7 @@ class LibraryGenerator {
                                   ..required = p.isRequired
                                   ..type = typeRefer(p, targetFile: targetFile),
                               )))
+                      ..optionalParameters.add(navigatorKeyParameter)
                       ..returns = typeRefer(
                         route.returnType,
                         targetFile: targetFile,
@@ -210,16 +236,22 @@ class LibraryGenerator {
                       ..named = true
                       ..type = const Reference('T?'),
                   ))
+                  ..optionalParameters.add(navigatorIdParameter)
                   ..returns = const Reference('void')
-                  ..body = const Reference('Get.back<T>')
-                      .call([], {'result': const Reference('result')}).code,
+                  ..body = const Reference('Get.back<T>').call([], {
+                    'result': const Reference('result'),
+                    'id': const Reference('navigatorId'),
+                  }).code,
               ))
               ..methods.add(Method(
                 (b) => b
                   ..name = 'closeDialog'
                   ..lambda = true
+                  ..optionalParameters.add(navigatorIdParameter)
                   ..returns = const Reference('void')
-                  ..body = const Reference('goBack<void>').call([]).code,
+                  ..body = const Reference('goBack<void>').call([], {
+                    'navigatorId': const Reference('navigatorId'),
+                  }).code,
               ))
               ..methods.add(Method(
                 (b) => b
@@ -234,9 +266,13 @@ class LibraryGenerator {
                             'Route<dynamic>',
                             'package:flutter/material.dart'))),
                   ))
+                  ..optionalParameters.add(navigatorIdParameter)
                   ..returns = const Reference('void')
-                  ..body = const Reference('Get.until')
-                      .call([const Reference('predicate')]).code,
+                  ..body = const Reference('Get.until').call([
+                    const Reference('predicate')
+                  ], {
+                    'id': const Reference('navigatorId'),
+                  }).code,
               ))
               ..methods.add(Method(
                 (b) => b
@@ -245,10 +281,13 @@ class LibraryGenerator {
                   ..requiredParameters.add(Parameter((b) => b
                     ..name = 'routeName'
                     ..type = const Reference('String')))
+                  ..optionalParameters.add(navigatorIdParameter)
                   ..returns = const Reference('void')
                   ..body = const Reference('Get.until').call([
-                    const Reference('(route) => Get.currentRoute == routeName')
-                  ]).code,
+                    const Reference('(route) => Get.currentRoute == routeName'),
+                  ], {
+                    'id': const Reference('navigatorId'),
+                  }).code,
               ))
               ..methods.add(Method(
                 (b) => b
@@ -263,12 +302,15 @@ class LibraryGenerator {
                       ..type = const Reference(
                           'Widget?', 'package:flutter/material.dart'),
                   ))
+                  ..optionalParameters.add(navigatorKeyParameter)
                   ..returns = const Reference('Future<T?>')
                   ..body = const Reference('Get.dialog<T>').call([
                     const Reference('widget').ifNullThen(const Reference(
                             'SizedBox.shrink', 'package:flutter/material.dart')
                         .constInstance([]))
-                  ]).code,
+                  ], {
+                    'navigatorKey': const Reference('navigatorKey'),
+                  }).code,
               ))),
             Class(
               (b) {

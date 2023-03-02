@@ -146,20 +146,31 @@ class Help extends StatelessWidget {
   }
 ```
 
-## Custom annotations
+## Nested navigators
 
-Rather than using the same middleware in the annotations, you can define your own annotations. For example:
+This package supports nested navigators. To use them, you need to specify a `id` for the navigator and use the `navigatorId` argument in the methods.
 
 ```dart
-const loginRoute = GetXRoute(
-  middlewares: [
-    AuthenticationGuard,
-    AnalyticsPermissionGuard,
-  ],
+Navigator(
+  key: Get.nestedKey(widget.id),
+  onGenerateRoute: (settings) {
+    final page = MainNavigator.pages.firstWhere((element) => element.name == settings.name);
+    return GetPageRoute<dynamic>(
+      page: page.page,
+      settings: settings,
+      binding: page.binding,
+      transition: page.transition,
+      opaque: page.opaque,
+      popGesture: page.popGesture,
+      fullscreenDialog: page.fullscreenDialog,
+      maintainState: page.maintainState,
+      curve: page.curve,
+      middlewares: page.middlewares,
+    );
+  },
 );
 
-// in your widget:
-@loginRoute
-class LoginPage extends StatelessWidget {
-  ...
+...
+
+_navigator.goToPageWithinNestedNavigation(navigatorId: widget.id);
 ```
