@@ -111,6 +111,10 @@ class GeneratedNavigator {
       ));
   void goBack<T>({T? result}) => Get.back<T>(result: result);
   void closeDialog() => goBack<void>();
+  void popUntil(bool Function(_i4.Route<dynamic>) predicate) =>
+      Get.until(predicate);
+  void goBackTo(String routeName) =>
+      Get.until((route) => Get.currentRoute == routeName);
   Future<T?> showCustomDialog<T>({_i4.Widget? widget}) async =>
       Get.dialog<T>(widget ?? const _i4.SizedBox.shrink());
 }

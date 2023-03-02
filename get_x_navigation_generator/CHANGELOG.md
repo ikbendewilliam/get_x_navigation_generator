@@ -1,3 +1,7 @@
+## 0.0.x (2023-02-xx)
+
+- Added support for `popUntil` and `goBackTo` methods
+
 ## 0.0.10 (2023-02-17)
 
 - Added support for multiple annotations on the same class so you can generate multiple methods for a single page (use routeName to specify the name of the method and route)
