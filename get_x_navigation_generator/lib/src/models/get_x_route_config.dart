@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+import 'package:collection/collection.dart';
 import 'package:get_x_navigation_generator/src/models/importable_type.dart';
 import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 
@@ -16,14 +16,14 @@ class GetXRouteConfig {
   final List<ImportableType> parameters;
   final List<ImportableType> middlewares;
   final ImportableType? customTransition;
-  final Transition? transition;
-  final Duration? transitionDuration;
+  final RouteTransition? transition;
+  final int? transitionDurationInMilliseconds;
   final bool? participatesInRootNavigator;
   final String? title;
-  final bool maintainState;
-  final bool opaque;
+  final bool? maintainState;
+  final bool? opaque;
   final bool? popGesture;
-  final bool showCupertinoParallax;
+  final bool? showCupertinoParallax;
 
   GetXRouteConfig({
     required this.type,
@@ -40,7 +40,7 @@ class GetXRouteConfig {
     required this.isFullscreenDialog,
     required this.customTransition,
     required this.transition,
-    required this.transitionDuration,
+    required this.transitionDurationInMilliseconds,
     required this.participatesInRootNavigator,
     required this.title,
     required this.maintainState,
@@ -78,8 +78,8 @@ class GetXRouteConfig {
       'generateMethod': generateMethod,
       'generatePage': generatePage,
       'customTransition': customTransition?.toMap(),
-      'transition': transition,
-      'transitionDuration': transitionDuration?.inMilliseconds,
+      'transition': transition?.index,
+      'transitionDurationInMilliseconds': transitionDurationInMilliseconds,
       'participatesInRootNavigator': participatesInRootNavigator,
       'title': title,
       'maintainState': maintainState,
@@ -92,26 +92,38 @@ class GetXRouteConfig {
   factory GetXRouteConfig.fromMap(Map<String, dynamic> map) {
     return GetXRouteConfig(
       type: ImportableType.fromMap(map['type'] as Map<String, dynamic>),
-      returnType: map['returnType'] != null ? ImportableType.fromMap(map['returnType'] as Map<String, dynamic>) : null,
+      returnType: map['returnType'] != null
+          ? ImportableType.fromMap(map['returnType'] as Map<String, dynamic>)
+          : null,
       routeName: map['routeName'] as String? ?? '',
       routeNameIsDefined: map['routeNameIsDefined'] as bool,
       preventDuplicates: map['preventDuplicates'] as bool,
       constructorName: map['constructorName'] as String? ?? '',
-      navigationType: NavigationType.values.firstWhereOrNull((e) => e.index == map['navigationType']),
-      parameters: List<ImportableType>.from(map['parameters']?.map((dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>)) as Iterable),
-      middlewares: List<ImportableType>.from(map['middlewares']?.map((dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>)) as Iterable),
+      navigationType: NavigationType.values
+          .firstWhereOrNull((e) => e.index == map['navigationType']),
+      parameters: List<ImportableType>.from(map['parameters']?.map(
+              (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
+          as Iterable),
+      middlewares: List<ImportableType>.from(map['middlewares']?.map(
+              (dynamic x) => ImportableType.fromMap(x as Map<String, dynamic>))
+          as Iterable),
       isFullscreenDialog: map['isFullscreenDialog'] as bool,
       generateMethod: map['generateMethod'] as bool,
       generatePage: map['generatePage'] as bool,
-      customTransition: map['customTransition'] != null ? ImportableType.fromMap(map['customTransition'] as Map<String, dynamic>) : null,
-      transition: map['transition'] is int ? Transition.values[map['transition'] as int] : null,
-      transitionDuration: map['transitionDuration'] == null ? null : Duration(milliseconds: map['transitionDuration'] as int),
+      customTransition: map['customTransition'] != null
+          ? ImportableType.fromMap(
+              map['customTransition'] as Map<String, dynamic>)
+          : null,
+      transition: RouteTransition.values
+          .firstWhereOrNull((e) => e.index == map['transition']),
+      transitionDurationInMilliseconds:
+          map['transitionDurationInMilliseconds'] as int?,
       participatesInRootNavigator: map['participatesInRootNavigator'] as bool?,
       title: map['title'] as String?,
-      maintainState: map['maintainState'] as bool,
-      opaque: map['opaque'] as bool,
+      maintainState: map['maintainState'] as bool?,
+      opaque: map['opaque'] as bool?,
       popGesture: map['popGesture'] as bool?,
-      showCupertinoParallax: map['showCupertinoParallax'] as bool,
+      showCupertinoParallax: map['showCupertinoParallax'] as bool?,
     );
   }
 }

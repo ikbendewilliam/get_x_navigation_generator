@@ -1,41 +1,52 @@
 import 'package:analyzer/dart/element/element.dart';
-import 'package:get/get.dart';
+import 'package:collection/collection.dart';
 import 'package:get_x_navigation_generator/src/case_utils.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
+import 'package:get_x_navigation_generator/src/resolvers/importable_type_resolver.dart';
 import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 import 'package:source_gen/source_gen.dart';
 
-import 'importable_type_resolver.dart';
-
 const TypeChecker _getXRouteChecker = TypeChecker.fromRuntime(GetXRoute);
-const TypeChecker _constructorChecker = TypeChecker.fromRuntime(GetXRouteConstructor);
+const TypeChecker _constructorChecker =
+    TypeChecker.fromRuntime(GetXRouteConstructor);
 
 class RouteResolver {
   final ImportableTypeResolverImpl _typeResolver;
 
-  RouteResolver(List<LibraryElement> libs) : _typeResolver = ImportableTypeResolverImpl(libs);
+  RouteResolver(List<LibraryElement> libs)
+      : _typeResolver = ImportableTypeResolverImpl(libs);
 
   List<GetXRouteConfig> resolve(ClassElement clazz) {
     final annotatedElement = clazz;
-    final getXRouteAnnotations = _getXRouteChecker.annotationsOf(annotatedElement, throwOnUnresolved: false);
+    final getXRouteAnnotations = _getXRouteChecker
+        .annotationsOf(annotatedElement, throwOnUnresolved: false);
     return getXRouteAnnotations.map((getXRouteAnnotation) {
       final getXRoute = ConstantReader(getXRouteAnnotation);
       final routeNameValue = getXRoute.peek('routeName')?.stringValue;
       final routeName = routeNameValue ?? CaseUtil(clazz.name).kebabCase;
       final returnType = getXRoute.peek('returnType')?.typeValue;
-      final navigationType = NavigationType.values.firstWhereOrNull((element) => element.index == getXRoute.peek('navigationType')?.peek('index')?.intValue);
-      final preventDuplicates = getXRoute.peek('preventDuplicates')?.boolValue ?? true;
-      final returnTypeNullable = getXRoute.peek('returnTypeNullable')?.boolValue ?? false;
+      final navigationType = NavigationType.values.firstWhereOrNull((element) =>
+          element.index ==
+          getXRoute.peek('navigationType')?.peek('index')?.intValue);
+      final preventDuplicates =
+          getXRoute.peek('preventDuplicates')?.boolValue ?? false;
+      final returnTypeNullable =
+          getXRoute.peek('returnTypeNullable')?.boolValue ?? false;
       final middlewares = getXRoute.peek('middlewares')?.listValue ?? [];
       final customTransition = getXRoute.peek('customTransition')?.typeValue;
-      final transition = getXRoute.peek('transition')?.objectValue as Transition?;
-      final transitionDuration = getXRoute.peek('transitionDuration')?.objectValue as Duration?;
-      final participatesInRootNavigator = getXRoute.peek('participatesInRootNavigator')?.boolValue;
+      final transition = RouteTransition.values.firstWhereOrNull((element) =>
+          element.index ==
+          getXRoute.peek('transition')?.peek('index')?.intValue);
+      final transitionDurationInMilliseconds =
+          getXRoute.peek('transitionDurationInMilliseconds')?.intValue;
+      final participatesInRootNavigator =
+          getXRoute.peek('participatesInRootNavigator')?.boolValue;
       final title = getXRoute.peek('title')?.stringValue;
-      final maintainState = getXRoute.peek('maintainState')?.boolValue ?? true;
-      final opaque = getXRoute.peek('opaque')?.boolValue ?? true;
+      final maintainState = getXRoute.peek('maintainState')?.boolValue;
+      final opaque = getXRoute.peek('opaque')?.boolValue;
       final popGesture = getXRoute.peek('popGesture')?.boolValue;
-      final showCupertinoParallax = getXRoute.peek('showCupertinoParallax')?.boolValue ?? true;
+      final showCupertinoParallax =
+          getXRoute.peek('showCupertinoParallax')?.boolValue;
 
       final possibleFactories = <ExecutableElement>[
         ...clazz.methods.where((m) => m.isStatic),
@@ -67,13 +78,19 @@ class RouteResolver {
         routeName: routeName,
         routeNameIsDefined: routeNameValue != null,
         navigationType: navigationType,
-        middlewares: middlewares.map((e) => _typeResolver.resolveType(e.toTypeValue()!)).toList(),
-        isFullscreenDialog: getXRoute.peek('isFullscreenDialog')?.boolValue ?? false,
+        middlewares: middlewares
+            .map((e) => _typeResolver.resolveType(e.toTypeValue()!))
+            .toList(),
+        isFullscreenDialog:
+            getXRoute.peek('isFullscreenDialog')?.boolValue ?? false,
         generateMethod: getXRoute.peek('generateMethod')?.boolValue ?? true,
-        generatePage: (getXRoute.peek('generatePage')?.boolValue ?? true) && navigationType != NavigationType.dialog,
-        customTransition: customTransition == null ? null : _typeResolver.resolveType(customTransition),
+        generatePage: (getXRoute.peek('generatePage')?.boolValue ?? true) &&
+            navigationType != NavigationType.dialog,
+        customTransition: customTransition == null
+            ? null
+            : _typeResolver.resolveType(customTransition),
         transition: transition,
-        transitionDuration: transitionDuration,
+        transitionDurationInMilliseconds: transitionDurationInMilliseconds,
         participatesInRootNavigator: participatesInRootNavigator,
         title: title,
         maintainState: maintainState,

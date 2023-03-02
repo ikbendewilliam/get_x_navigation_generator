@@ -1,5 +1,3 @@
-import 'package:get/get.dart';
-
 /// Marks a class as a navigator and create
 /// a base navigator class for it
 class GetXNavigator {
@@ -58,11 +56,16 @@ class GetXRoute {
   /// to extend [CustomTransition]
   final Type? customTransition;
 
-  /// The transition to use for this route
-  final Transition? transition;
+  /// The transition to use for this route.
+  ///
+  /// **Note**: Transition cannot
+  /// be used in the annotations package, therefore you
+  /// need to pass the the transition as a RouteTransition.
+  /// For example: "RouteTransition.zoom"
+  final RouteTransition? transition;
 
   /// The duration of the transition to use for this route
-  final Duration? transitionDuration;
+  final int? transitionDurationInMilliseconds;
 
   /// Whether this route participates in the root navigator
   final bool? participatesInRootNavigator;
@@ -71,16 +74,16 @@ class GetXRoute {
   final String? title;
 
   /// Whether to maintain the state of this route
-  final bool maintainState;
+  final bool? maintainState;
 
   /// Whether this route is opaque
-  final bool opaque;
+  final bool? opaque;
 
   /// Whether to enable the pop gesture for this route
   final bool? popGesture;
 
   /// Whether to show the parallax effect on iOS
-  final bool showCupertinoParallax;
+  final bool? showCupertinoParallax;
 
   /// Enable/Disable the generation of the page, use this if you separate the
   /// declaration of the page and the method. This is useful if you have
@@ -116,13 +119,13 @@ class GetXRoute {
     this.preventDuplicates = false,
     this.customTransition,
     this.transition,
-    this.transitionDuration,
+    this.transitionDurationInMilliseconds,
     this.participatesInRootNavigator,
     this.title,
-    this.maintainState = true,
-    this.opaque = true,
+    this.maintainState,
+    this.opaque,
     this.popGesture,
-    this.showCupertinoParallax = true,
+    this.showCupertinoParallax,
   });
 }
 
@@ -177,3 +180,22 @@ class GetXRouteConstructor {
 
 /// const instance of [GetXRouteConstructor]
 const getXRouteConstructor = GetXRouteConstructor();
+
+enum RouteTransition {
+  fade,
+  fadeIn,
+  rightToLeft,
+  leftToRight,
+  upToDown,
+  downToUp,
+  rightToLeftWithFade,
+  leftToRightWithFade,
+  zoom,
+  topLevel,
+  noTransition,
+  cupertino,
+  cupertinoDialog,
+  size,
+  circularReveal,
+  native,
+}

@@ -81,6 +81,15 @@ class RouteNames {
 - `generateMethod`: If a method should be generated for the route. Default: `true` (More info in separate method/page section below)
 - `generatePage`: If a page should be generated for the route. Default: `true` (More info in separate method/page section below)
 - `isFullscreenDialog`: If the route should be launched fullscreen. Default: `false`
+- `customTransition`:  A custom transition to use for this route, needs to extend [CustomTransition]
+- `transition`:  The transition to use for this route.
+- `transitionDurationInMilliseconds`:  The duration of the transition to use for this route
+- `participatesInRootNavigator`:  Whether this route participates in the root navigator
+- `title`:  The title to use for this route
+- `maintainState`:  Whether to maintain the state of this route
+- `opaque`:  Whether this route is opaque
+- `popGesture`:  Whether to enable the pop gesture for this route
+- `showCupertinoParallax`: Whether to show the parallax effect on iOS
 
 - `@getXRouteConstructor`: The constructor to use for the route. Defaults to unnamed constructor. This can be any constructor or static method
 
