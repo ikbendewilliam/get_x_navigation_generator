@@ -1,4 +1,4 @@
-## 0.0.x (2023-02-xx)
+## 0.0.11 (2023-03-02)
 
 - Added `popUntil` and `goBackTo` methods on the generated navigator
 - Added support for `navigatorId` on the generated methods to be able to use nested navigators
