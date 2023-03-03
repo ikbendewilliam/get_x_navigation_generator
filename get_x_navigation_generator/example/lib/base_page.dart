@@ -4,6 +4,7 @@ import 'package:get/route_manager.dart';
 class BasePage<T> extends GetPage<T> {
   BasePage({
     Transition? transition,
+    Curve? curve,
     required super.name,
     required super.page,
     super.title,
@@ -26,7 +27,7 @@ class BasePage<T> extends GetPage<T> {
     super.preventDuplicates,
     super.showCupertinoParallax,
   }) : super(
-          curve: Curves.bounceIn,
+          curve: curve ?? Curves.bounceIn,
           transition: transition ?? Transition.circularReveal,
         );
 }

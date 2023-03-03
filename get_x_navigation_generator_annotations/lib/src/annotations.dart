@@ -52,6 +52,39 @@ class GetXRoute {
   /// Open the route in fullscreen mode
   final bool isFullscreenDialog;
 
+  /// A custom transition to use for this route, needs
+  /// to extend [CustomTransition]
+  final Type? customTransition;
+
+  /// The transition to use for this route.
+  ///
+  /// **Note**: Transition cannot
+  /// be used in the annotations package, therefore you
+  /// need to pass the the transition as a RouteTransition.
+  /// For example: "RouteTransition.zoom"
+  final RouteTransition? transition;
+
+  /// The duration of the transition to use for this route
+  final int? transitionDurationInMilliseconds;
+
+  /// Whether this route participates in the root navigator
+  final bool? participatesInRootNavigator;
+
+  /// The title to use for this route
+  final String? title;
+
+  /// Whether to maintain the state of this route
+  final bool? maintainState;
+
+  /// Whether this route is opaque
+  final bool? opaque;
+
+  /// Whether to enable the pop gesture for this route
+  final bool? popGesture;
+
+  /// Whether to show the parallax effect on iOS
+  final bool? showCupertinoParallax;
+
   /// Enable/Disable the generation of the page, use this if you separate the
   /// declaration of the page and the method. This is useful if you have
   /// a shared package that declares the method and a project that declares
@@ -84,6 +117,15 @@ class GetXRoute {
     this.generatePage = true,
     this.generateMethod = true,
     this.preventDuplicates = false,
+    this.customTransition,
+    this.transition,
+    this.transitionDurationInMilliseconds,
+    this.participatesInRootNavigator,
+    this.title,
+    this.maintainState,
+    this.opaque,
+    this.popGesture,
+    this.showCupertinoParallax,
   });
 }
 
@@ -138,3 +180,22 @@ class GetXRouteConstructor {
 
 /// const instance of [GetXRouteConstructor]
 const getXRouteConstructor = GetXRouteConstructor();
+
+enum RouteTransition {
+  fade,
+  fadeIn,
+  rightToLeft,
+  leftToRight,
+  upToDown,
+  downToUp,
+  rightToLeftWithFade,
+  leftToRightWithFade,
+  zoom,
+  topLevel,
+  noTransition,
+  cupertino,
+  cupertinoDialog,
+  size,
+  circularReveal,
+  native,
+}

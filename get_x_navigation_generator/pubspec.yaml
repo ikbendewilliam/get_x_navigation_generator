@@ -5,7 +5,7 @@ homepage: https://github.com/ikbendewilliam/get_x_navigation_generator
 
 environment:
   sdk: '>=2.18.0 <3.0.0'
-  flutter: ">=1.17.0"
+  flutter: ">=2.0.0"
 
 dependencies:
   analyzer: ^5.0.0
@@ -15,6 +15,7 @@ dependencies:
   dart_style: ^2.2.4
   flutter:
     sdk: flutter
+  get: ^4.6.5
   glob: ^2.1.1
   path: ^1.8.2
   source_gen: ^1.2.6
@@ -26,8 +27,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 # Comment before publishing
-# dependency_overrides:
-#   get_x_navigation_generator_annotations: 
-#     path: ../get_x_navigation_generator_annotations
+dependency_overrides:
+  get_x_navigation_generator_annotations: 
+    path: ../get_x_navigation_generator_annotations
 
 flutter:

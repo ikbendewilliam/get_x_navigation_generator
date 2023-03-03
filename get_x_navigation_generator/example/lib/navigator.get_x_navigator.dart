@@ -6,14 +6,15 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:flutter/material.dart' as _i4;
+import 'package:get/route_manager.dart' as _i8;
 import 'package:get/route_manager.dart';
 
-import 'abstract_page_implementation.dart' as _i9;
+import 'abstract_page_implementation.dart' as _i10;
 import 'base_page.dart' as _i1;
-import 'dialog.dart' as _i10;
+import 'dialog.dart' as _i11;
 import 'main.dart' as _i5;
 import 'middleware_example.dart' as _i7;
-import 'page_with_another_navigator.dart' as _i8;
+import 'page_with_another_navigator.dart' as _i9;
 import 'second_page.dart' as _i6;
 import 'some_model.dart' as _i2;
 import 'third_page.dart' as _i3;
@@ -39,6 +40,14 @@ class GeneratedNavigator {
         key: (Get.arguments?['key'] as _i4.Key?),
       ),
       middlewares: [_i7.MiddlewareExample()],
+      transition: _i8.Transition.zoom,
+      transitionDuration: const Duration(milliseconds: 1000),
+      participatesInRootNavigator: true,
+      title: 'SecondPage',
+      maintainState: false,
+      opaque: false,
+      showCupertinoParallax: true,
+      popGesture: true,
     ),
     _i1.BasePage<dynamic>(
       name: RouteNames.secondPage,
@@ -50,12 +59,12 @@ class GeneratedNavigator {
     ),
     _i1.BasePage<dynamic>(
       name: RouteNames.pageWithAnotherNavigator,
-      page: () => _i8.PageWithAnotherNavigator(
+      page: () => _i9.PageWithAnotherNavigator(
           key: (Get.arguments?['key'] as _i4.Key?)),
     ),
     _i1.BasePage<dynamic>(
       name: RouteNames.implementedPage,
-      page: () => _i9.BasePageImplementation(
+      page: () => _i10.BasePageImplementation(
         someVariable: (Get.arguments?['someVariable'] as bool),
         key: (Get.arguments?['key'] as _i4.Key?),
       ),
@@ -139,7 +148,7 @@ class GeneratedNavigator {
   }) async =>
       showCustomDialog<bool>(
         navigatorKey: navigatorKey,
-        widget: _i10.SomeDialog(
+        widget: _i11.SomeDialog(
           title: title,
           subTitle: subTitle,
           key: key,

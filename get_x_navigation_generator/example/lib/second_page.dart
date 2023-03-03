@@ -10,6 +10,14 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
   middlewares: [
     MiddlewareExample,
   ],
+  transition: RouteTransition.zoom,
+  transitionDurationInMilliseconds: 1000,
+  participatesInRootNavigator: true,
+  title: 'Second Page',
+  maintainState: false,
+  opaque: false,
+  popGesture: true,
+  showCupertinoParallax: true,
 )
 @getXRoute // Generate two routes: /second-page and /custom-name
 class SecondPage extends StatelessWidget {

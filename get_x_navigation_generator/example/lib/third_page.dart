@@ -1,3 +1,4 @@
+import 'package:example/custom_transition.dart';
 import 'package:example/navigator.dart';
 import 'package:example/some_model.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
 @GetXRoute(
   returnType: SomeModel,
   returnTypeNullable: true,
+  customTransition: ExampleCustomTransition,
 )
 class ThirdPage extends StatelessWidget {
   final SomeModel? previousValue;

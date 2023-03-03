@@ -15,6 +15,15 @@ class GetXRouteConfig {
   final NavigationType? navigationType;
   final List<ImportableType> parameters;
   final List<ImportableType> middlewares;
+  final ImportableType? customTransition;
+  final RouteTransition? transition;
+  final int? transitionDurationInMilliseconds;
+  final bool? participatesInRootNavigator;
+  final String? title;
+  final bool? maintainState;
+  final bool? opaque;
+  final bool? popGesture;
+  final bool? showCupertinoParallax;
 
   GetXRouteConfig({
     required this.type,
@@ -29,6 +38,15 @@ class GetXRouteConfig {
     required this.generateMethod,
     required this.generatePage,
     required this.isFullscreenDialog,
+    required this.customTransition,
+    required this.transition,
+    required this.transitionDurationInMilliseconds,
+    required this.participatesInRootNavigator,
+    required this.title,
+    required this.maintainState,
+    required this.opaque,
+    required this.popGesture,
+    required this.showCupertinoParallax,
   });
 
   String get navigationTypeAsString {
@@ -59,6 +77,15 @@ class GetXRouteConfig {
       'isFullscreenDialog': isFullscreenDialog,
       'generateMethod': generateMethod,
       'generatePage': generatePage,
+      'customTransition': customTransition?.toMap(),
+      'transition': transition?.index,
+      'transitionDurationInMilliseconds': transitionDurationInMilliseconds,
+      'participatesInRootNavigator': participatesInRootNavigator,
+      'title': title,
+      'maintainState': maintainState,
+      'opaque': opaque,
+      'popGesture': popGesture,
+      'showCupertinoParallax': showCupertinoParallax,
     };
   }
 
@@ -83,6 +110,20 @@ class GetXRouteConfig {
       isFullscreenDialog: map['isFullscreenDialog'] as bool,
       generateMethod: map['generateMethod'] as bool,
       generatePage: map['generatePage'] as bool,
+      customTransition: map['customTransition'] != null
+          ? ImportableType.fromMap(
+              map['customTransition'] as Map<String, dynamic>)
+          : null,
+      transition: RouteTransition.values
+          .firstWhereOrNull((e) => e.index == map['transition']),
+      transitionDurationInMilliseconds:
+          map['transitionDurationInMilliseconds'] as int?,
+      participatesInRootNavigator: map['participatesInRootNavigator'] as bool?,
+      title: map['title'] as String?,
+      maintainState: map['maintainState'] as bool?,
+      opaque: map['opaque'] as bool?,
+      popGesture: map['popGesture'] as bool?,
+      showCupertinoParallax: map['showCupertinoParallax'] as bool?,
     );
   }
 }

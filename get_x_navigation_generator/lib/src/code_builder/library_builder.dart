@@ -1,6 +1,7 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:get_x_navigation_generator/src/case_utils.dart';
 import 'package:get_x_navigation_generator/src/extensions/navigation_type_extension.dart';
+import 'package:get_x_navigation_generator/src/extensions/route_transition_extension.dart';
 import 'package:get_x_navigation_generator/src/models/get_x_route_config.dart';
 import 'package:get_x_navigation_generator/src/models/importable_type.dart';
 import 'package:get_x_navigation_generator/src/utils.dart';
@@ -106,6 +107,34 @@ class LibraryGenerator {
                                       .toList()),
                                 if (route.isFullscreenDialog)
                                   'fullscreenDialog': literalBool(true),
+                                if (route.transition != null)
+                                  'transition': Reference(
+                                      route.transition?.transition,
+                                      'package:get/route_manager.dart'),
+                                if (route.transitionDurationInMilliseconds !=
+                                    null) ...{
+                                  'transitionDuration':
+                                      const Reference('const Duration')
+                                          .call([], {
+                                    'milliseconds': literalNum(
+                                        route.transitionDurationInMilliseconds!)
+                                  }),
+                                },
+                                if (route.participatesInRootNavigator != null)
+                                  'participatesInRootNavigator': literalBool(
+                                      route.participatesInRootNavigator!),
+                                if (route.title != null)
+                                  'title': literalString(route.title!),
+                                if (route.maintainState != null)
+                                  'maintainState':
+                                      literalBool(route.maintainState!),
+                                if (route.opaque != null)
+                                  'opaque': literalBool(route.opaque!),
+                                if (route.showCupertinoParallax != null)
+                                  'showCupertinoParallax':
+                                      literalBool(route.showCupertinoParallax!),
+                                if (route.popGesture != null)
+                                  'popGesture': literalBool(route.popGesture!),
                               }))
                           .toList())
                       .code,
