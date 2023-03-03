@@ -8,7 +8,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  get_x_navigation_generator_annotations: ^0.0.6
+  get_x_navigation_generator_annotations: ^0.0.8
   get: ^4.6.5
 
 dev_dependencies:
@@ -20,9 +20,9 @@ dev_dependencies:
     path: ../
 
 # Comment before publishing
-dependency_overrides:
-  get_x_navigation_generator_annotations: 
-    path: ../../get_x_navigation_generator_annotations
+# dependency_overrides:
+#   get_x_navigation_generator_annotations: 
+#     path: ../../get_x_navigation_generator_annotations
 
 flutter:
   uses-material-design: true

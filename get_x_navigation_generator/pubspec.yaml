@@ -1,6 +1,6 @@
 name: get_x_navigation_generator
 description: Generate your getX navigator by annotating your screen 
-version: 0.0.11
+version: 0.0.12
 homepage: https://github.com/ikbendewilliam/get_x_navigation_generator
 
 environment:
@@ -19,7 +19,7 @@ dependencies:
   glob: ^2.1.1
   path: ^1.8.2
   source_gen: ^1.2.6
-  get_x_navigation_generator_annotations: ^0.0.7
+  get_x_navigation_generator_annotations: ^0.0.8
 
 dev_dependencies:
   flutter_test:
@@ -27,8 +27,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 # Comment before publishing
-dependency_overrides:
-  get_x_navigation_generator_annotations: 
-    path: ../get_x_navigation_generator_annotations
+# dependency_overrides:
+#   get_x_navigation_generator_annotations: 
+#     path: ../get_x_navigation_generator_annotations
 
 flutter:

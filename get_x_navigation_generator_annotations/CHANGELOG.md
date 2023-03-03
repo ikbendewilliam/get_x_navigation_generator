@@ -1,4 +1,4 @@
-## 0.0.x (2023-03-xx)
+## 0.0.8 (2023-03-03)
 
 - Added support to specify `customTransition`, `transition`, `transitionDurationInMilliseconds`, `participatesInRootNavigator`, `title`, `maintainState`, `opaque`, `popGesture` and `showCupertinoParallax` for generated methods
 
