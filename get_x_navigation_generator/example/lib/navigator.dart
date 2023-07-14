@@ -8,7 +8,7 @@ import 'navigator.get_x_navigator.dart';
   navigatorClassName: 'GeneratedNavigator',
   pageType: BasePage,
 )
-class MainNavigator extends GeneratedNavigator {
+class MainNavigator with GeneratedNavigator {
   MainNavigator._();
 
   // Note: use GetIt or something similar to inject this rather than declaring a singleton here

@@ -1,5 +1,6 @@
 import 'package:example/navigator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/nav2/get_router_delegate.dart';
 import 'package:get_x_navigation_generator_annotations/get_x_navigation_generator_annotations.dart';
 
 @GetXRoute(
@@ -33,6 +34,7 @@ class BasePageExample extends StatelessWidget {
             const Spacer(),
             Text(title),
             const SizedBox(height: 16),
+            GetNavigator(pages: const []),
             MaterialButton(
               onPressed: () => MainNavigator.instance.goBack<void>(),
               child: const Text('Go back'),

@@ -6,28 +6,42 @@ import 'package:get_x_navigation_generator_annotations/get_x_navigation_generato
 
 @GetXRoute(
   returnType: SomeModel,
-  returnTypeNullable: true,
   customTransition: ExampleCustomTransition,
 )
 class ThirdPage extends StatelessWidget {
   final SomeModel? previousValue;
+  final String aStringWithDefaultValue;
+  final bool aBoolWithDefaultValue;
+  final bool anotherBoolWithDefaultValue;
 
   const ThirdPage({
+    required this.aStringWithDefaultValue,
+    required this.aBoolWithDefaultValue,
+    required this.anotherBoolWithDefaultValue,
     super.key,
   }) : previousValue = null;
 
   const ThirdPage._withValue({
     required this.previousValue,
+    required this.aStringWithDefaultValue,
+    required this.aBoolWithDefaultValue,
+    required this.anotherBoolWithDefaultValue,
     super.key,
   });
 
   @getXRouteConstructor
   static ThirdPage withValue({
     required SomeModel? previousValue,
+    String aStringWithDefaultValue = '',
+    bool aBoolWithDefaultValue = false,
+    bool anotherBoolWithDefaultValue = 'Hello' == 'Hello',
     Key? key,
   }) =>
       ThirdPage._withValue(
         previousValue: previousValue,
+        aStringWithDefaultValue: aStringWithDefaultValue,
+        aBoolWithDefaultValue: aBoolWithDefaultValue,
+        anotherBoolWithDefaultValue: anotherBoolWithDefaultValue,
         key: key,
       );
 

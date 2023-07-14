@@ -30,8 +30,6 @@ class RouteResolver {
           getXRoute.peek('navigationType')?.peek('index')?.intValue);
       final preventDuplicates =
           getXRoute.peek('preventDuplicates')?.boolValue ?? false;
-      final returnTypeNullable =
-          getXRoute.peek('returnTypeNullable')?.boolValue ?? false;
       final middlewares = getXRoute.peek('middlewares')?.listValue ?? [];
       final customTransition = getXRoute.peek('customTransition')?.typeValue;
       final transition = RouteTransition.values.firstWhereOrNull((element) =>
@@ -64,7 +62,7 @@ class RouteResolver {
             ? null
             : _typeResolver.resolveType(
                 returnType,
-                forceNullable: returnTypeNullable,
+                forceNullable: true,
               ),
         preventDuplicates: preventDuplicates,
         constructorName: constructor.name,
@@ -75,6 +73,11 @@ class RouteResolver {
                   name: p.name,
                 ))
             .toList(),
+        defaultValues: ((constructor.parameters.asMap().map<String, dynamic>(
+                (_, p) =>
+                    MapEntry<String, dynamic>(p.name, p.defaultValueCode)))
+              ..removeWhere((key, dynamic value) => value == null))
+            .cast<String, String>(),
         routeName: routeName,
         routeNameIsDefined: routeNameValue != null,
         navigationType: navigationType,

@@ -14,6 +14,7 @@ class GetXRouteConfig {
   final ImportableType? returnType;
   final NavigationType? navigationType;
   final List<ImportableType> parameters;
+  final Map<String, dynamic> defaultValues;
   final List<ImportableType> middlewares;
   final ImportableType? customTransition;
   final RouteTransition? transition;
@@ -34,6 +35,7 @@ class GetXRouteConfig {
     required this.constructorName,
     required this.navigationType,
     required this.parameters,
+    required this.defaultValues,
     required this.middlewares,
     required this.generateMethod,
     required this.generatePage,
@@ -86,6 +88,7 @@ class GetXRouteConfig {
       'opaque': opaque,
       'popGesture': popGesture,
       'showCupertinoParallax': showCupertinoParallax,
+      'defaultValues': defaultValues,
     };
   }
 
@@ -124,6 +127,8 @@ class GetXRouteConfig {
       opaque: map['opaque'] as bool?,
       popGesture: map['popGesture'] as bool?,
       showCupertinoParallax: map['showCupertinoParallax'] as bool?,
+      defaultValues:
+          map['defaultValues'] as Map<String, dynamic>? ?? <String, dynamic>{},
     );
   }
 }

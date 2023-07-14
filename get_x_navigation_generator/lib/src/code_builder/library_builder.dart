@@ -49,7 +49,7 @@ class LibraryGenerator {
         ])
         ..body.addAll(
           [
-            Class((b) => b
+            Mixin((b) => b
               ..name = className
               ..fields.add(Field(
                 (b) => b
@@ -185,14 +185,19 @@ class LibraryGenerator {
                       ..name = 'goTo${CaseUtil(route.routeName).upperCamelCase}'
                       ..lambda = route.returnType == null
                       ..modifier = isAsync ? MethodModifier.async : null
-                      ..optionalParameters
-                          .addAll(route.parameters.map((p) => Parameter(
-                                (b) => b
-                                  ..name = p.argumentName
-                                  ..named = true
-                                  ..required = p.isRequired
-                                  ..type = typeRefer(p, targetFile: targetFile),
-                              )))
+                      ..optionalParameters.addAll(route.parameters.map((p) {
+                        return Parameter(
+                          (b) => b
+                            ..name = p.argumentName
+                            ..named = true
+                            ..required = p.isRequired &&
+                                route.defaultValues[p.name] == null
+                            ..defaultTo = route.defaultValues[p.name] != null
+                                ? Code(route.defaultValues[p.name]! as String)
+                                : null
+                            ..type = typeRefer(p, targetFile: targetFile),
+                        );
+                      }))
                       ..optionalParameters.add(navigatorIdParameter)
                       ..returns = typeRefer(
                         route.returnType,
@@ -240,7 +245,14 @@ class LibraryGenerator {
                                 (b) => b
                                   ..name = p.argumentName
                                   ..named = true
-                                  ..required = p.isRequired
+                                  ..required = p.isRequired &&
+                                      route.defaultValues[p.name] == null
+                                  ..defaultTo = route.defaultValues[p.name] !=
+                                          null
+                                      ? Reference(route.defaultValues[p.name]!
+                                              as String)
+                                          .code
+                                      : null
                                   ..type = typeRefer(p, targetFile: targetFile),
                               )))
                       ..optionalParameters.add(navigatorKeyParameter)
