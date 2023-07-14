@@ -19,12 +19,18 @@ import 'second_page.dart' as _i6;
 import 'some_model.dart' as _i2;
 import 'third_page.dart' as _i3;
 
-class GeneratedNavigator {
+mixin GeneratedNavigator {
   static final pages = [
     _i1.BasePage<_i2.SomeModel?>(
       name: RouteNames.thirdPage,
       page: () => _i3.ThirdPage.withValue(
         previousValue: (Get.arguments?['previousValue'] as _i2.SomeModel?),
+        aStringWithDefaultValue:
+            (Get.arguments?['aStringWithDefaultValue'] as String),
+        aBoolWithDefaultValue:
+            (Get.arguments?['aBoolWithDefaultValue'] as bool),
+        anotherBoolWithDefaultValue:
+            (Get.arguments?['anotherBoolWithDefaultValue'] as bool),
         key: (Get.arguments?['key'] as _i4.Key?),
       ),
     ),
@@ -85,13 +91,22 @@ class GeneratedNavigator {
       );
   Future<_i2.SomeModel?> goToThirdPage({
     required _i2.SomeModel? previousValue,
+    String aStringWithDefaultValue = '',
+    bool aBoolWithDefaultValue = false,
+    bool anotherBoolWithDefaultValue = 'Hello' == 'Hello',
     _i4.Key? key,
     int? navigatorId,
   }) async {
     final dynamic result = await Get.toNamed<dynamic>(
       RouteNames.thirdPage,
       id: navigatorId,
-      arguments: {'previousValue': previousValue, 'key': key},
+      arguments: {
+        'previousValue': previousValue,
+        'aStringWithDefaultValue': aStringWithDefaultValue,
+        'aBoolWithDefaultValue': aBoolWithDefaultValue,
+        'anotherBoolWithDefaultValue': anotherBoolWithDefaultValue,
+        'key': key
+      },
       preventDuplicates: false,
     );
     return (result as _i2.SomeModel?);
@@ -146,7 +161,7 @@ class GeneratedNavigator {
     _i4.Key? key,
     _i4.GlobalKey<_i4.NavigatorState>? navigatorKey,
   }) async =>
-      showCustomDialog<bool>(
+      showCustomDialog<bool?>(
         navigatorKey: navigatorKey,
         widget: _i11.SomeDialog(
           title: title,

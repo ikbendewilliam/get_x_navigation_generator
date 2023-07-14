@@ -31,11 +31,7 @@ class GetXRoute {
   final String? routeName;
 
   /// Set the type returned by the goTo method.
-  /// If the type is nullable, set [returnTypeNullable] to true
   final Type? returnType;
-
-  /// Set if the type returned by the goTo method is nullable
-  final bool returnTypeNullable;
 
   /// Set if we allow duplicates of this route. Note that nested
   /// routes are also considered duplicates.
@@ -112,7 +108,6 @@ class GetXRoute {
     this.routeName,
     this.returnType,
     this.middlewares,
-    this.returnTypeNullable = false,
     this.isFullscreenDialog = false,
     this.generatePage = true,
     this.generateMethod = true,
@@ -144,7 +139,6 @@ class GetXDialog extends GetXRoute {
   }) : super(
           routeName: routeName,
           returnType: returnType,
-          returnTypeNullable: returnTypeNullable,
           isFullscreenDialog: true,
           middlewares: const [],
           navigationType: NavigationType.dialog,

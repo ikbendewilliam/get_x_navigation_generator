@@ -1,3 +1,10 @@
+## 0.1.0 (2023-06-14)
+
+- Updated dependencies and support for Dart 3
+- Changed generation from class to mixin as you can't extend a regular class and I don't see how to generate a mixinClass
+- Removed returnTypeNullable
+- Added default value and copies the current default value if any is specified
+
 ## 0.0.12 (2023-03-03)
 
 - Added support to specify `customTransition`, `transition`, `transitionDurationInMilliseconds`, `participatesInRootNavigator`, `title`, `maintainState`, `opaque`, `popGesture` and `showCupertinoParallax` for generated methods

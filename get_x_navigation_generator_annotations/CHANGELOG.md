@@ -1,3 +1,8 @@
+## 0.1.0 (2023-06-14)
+
+- Updated dependencies and support for Dart 3
+- Removed returnTypeNullable
+
 ## 0.0.8 (2023-03-03)
 
 - Added support to specify `customTransition`, `transition`, `transitionDurationInMilliseconds`, `participatesInRootNavigator`, `title`, `maintainState`, `opaque`, `popGesture` and `showCupertinoParallax` for generated methods
